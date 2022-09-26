@@ -1,6 +1,6 @@
 # Chrome Extension To Gather URL From Browser
 
-In this project we create a chrome extension to gather all url that are open on the current wbrowser window. It will also give you an option to directly copy those information directly to your clipboard in different format likes, Markdown, CSV, html, and plain text. 
+In this project we create a chrome extension to gather all url that are open on the current wbrowser window. It will also give you an option to directly copy those information directly to your clipboard in different format likes, Markdown, CSV, html, and plain text.  
 
 ## Dev Deployment
 
