@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Badge from 'react-bootstrap/Badge';
+ 
 import ListGroup from 'react-bootstrap/ListGroup';
 import { getTabs } from './chromeAPI';
+import List from './List';
 
 
 
@@ -10,6 +11,8 @@ import { getTabs } from './chromeAPI';
 export default function ShowLink() {
 
   const [tabs, setTabs] = useState([])
+  const [copyRequest, setCopyRequest] = useState({})
+
 
 
   useEffect(() => {
@@ -24,6 +27,14 @@ export default function ShowLink() {
 
 
 
+  const handleListClickEvent =(e)=>{
+    console.log("You have clicked this list")
+    console.log(e.target.id)
+    setCopyRequest({
+      [e.target.id]: true
+    })
+  }
+
 
 
   return (
@@ -33,18 +44,14 @@ export default function ShowLink() {
           tabs
             ? tabs.map((el, index) => {
               return (
-                <ListGroup.Item
-                  key={index}
-                  as="li"
-                  className="d-flex justify-content-between align-items-start"
-                >
-                  <div className="ms-2 me-auto">
-                    <div className="fw-bold">{el.title}</div>
-                  </div>
-                  <Badge bg="primary" pill>
-                    copied
-                  </Badge>
-                </ListGroup.Item>
+                 <List 
+                  onClick={handleListClickEvent}
+                  key={index} 
+                  index={index} 
+                  title = {el?.title} 
+                  url={el?.url} 
+                  isCopied={copyRequest[index] } 
+                  />
               )
             })
             : null
@@ -53,3 +60,10 @@ export default function ShowLink() {
     </>
   );
 }
+
+
+/*
+<Badge bg="primary" pill>
+                    copied
+                  </Badge>
+                  */
