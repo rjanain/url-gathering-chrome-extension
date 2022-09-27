@@ -1,8 +1,9 @@
 import React from "react"
+import { Card } from "react-bootstrap"
 import { HomeCard } from "./home/HomeCard"
 import { OptionCard } from "./options/OptionCard"
 
-  
+
 
 
 export function Header() {
@@ -25,16 +26,18 @@ export function HomeTab(props) {
     return (
         <>
             <div className="tab-pane fade active  show" id="home">
-                
-                <div className="card border-dark mt-1" id="card-body">
-                    <h4 className="card-header">
-                        Automic URL Gathering 
-                    </h4>
-                    
-                     <HomeCard/>
+                <Card
+                    style={{ width: '18rem' }}
+                    border="dark"
+                    className="mt-1"
+                >
+                    <Card.Header>Automic URL Gathering</Card.Header>
+                    <Card.Body>
+                        <HomeCard />
+                    </Card.Body>
+                </Card>
 
 
-                </div>
             </div>
         </>
     )
@@ -53,7 +56,7 @@ export function OptionTab() {
                         Settings
                     </h4>
 
-                     <OptionCard/>
+                    <OptionCard />
 
                 </div>
             </div>

@@ -19,6 +19,7 @@ export const getTabs = async () => {
         response.push({
             id: el.id ? el.id : -1,
             windowId: el.windowId ? el.windowId : -1,
+            favIconUrl: el?.favIconUrl,
             title: el.title,
             url: el.url
         })
