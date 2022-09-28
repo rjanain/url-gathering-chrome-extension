@@ -1,0 +1,128 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ecf0f3;
+  }
+
+  .react-target,
+  .buttons a {
+    background: #ecf0f3;
+    box-shadow: -3px -3px 7px #ffffff, 3px 3px 5px #ceced1;
+    text-align: center;
+  }
+  .react-target {
+    position: relative;
+    width: 350px;
+    padding: 30px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .react-target .name {
+    font-size: 23px;
+    font-weight: 600;
+    color: #31344b;
+    margin: 10px 0 5px 0;
+  }
+  .react-target .about {
+    color: #44476a;
+    font-weight: 400;
+    font-size: 16px;
+    font-weight: 300;
+  }
+  
+  .buttons a:hover:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: 50%;
+    background: #ecf0f3;
+    box-shadow: inset -3px -3px 7px #ffffff, inset 3px 3px 5px #ceced1;
+  }
+  .buttons a:hover:before {
+    z-index: -1;
+    border-radius: 5px;
+  }
+  
+  .react-target .buttons {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .buttons a {
+    position: relative;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 12px 0;
+    color: #31344b;
+    font-size: 11pt;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 4;
+     margin: 20px;
+  }
+  .buttons a:first-child {
+    margin-right: 10px;
+  }
+  .buttons a:last-child {
+    margin-left: 10px;
+  }
+  .react-target .details {
+    display: flex;
+    width: 100%;
+    margin-top: 30px;
+    padding: 0 5px;
+    justify-content: space-between;
+  }
+  .details .row {
+    color: #31344b;
+    font-size: 17px;
+    cursor: pointer;
+    position: relative;
+  }
+  .details .row::before {
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 2px;
+    background: #e0e6eb;
+    margin-left: -25px;
+  }
+  .row:first-child::before {
+    background: none;
+  }
+  .details .row i.icon-2 {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    color: #31344b;
+    transform: translateY(-50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+  .row:nth-child(1):hover i.fa-heart,
+  .row:nth-child(2):hover i.fa-comment {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .details span {
+    font-family: roboto condensed !important;
+    font-weight: 300 !important;
+  }
+  
