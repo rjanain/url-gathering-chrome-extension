@@ -12,7 +12,7 @@ const CopyAllButton = (props) => {
                 id={props.id}
                 onClick={props.onClick}
             >
-                Go somewhere
+                Copy All
             </Button>
 
             {

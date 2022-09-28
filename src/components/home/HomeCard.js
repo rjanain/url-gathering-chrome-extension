@@ -11,7 +11,7 @@ export const HomeCard = (props) => {
   const [copyRequest, setCopyRequest] = useState({})
 
   const getLink = (id) => {
-    const seperator = "\r\n" // for new line
+    const seperator = "\r\n\r\n" // for new line
     const res = (id == "copyAll")
       ? tabs.map(el => { return el.url }).join(seperator)
       : tabs[id].url
