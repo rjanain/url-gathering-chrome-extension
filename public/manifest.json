@@ -10,30 +10,23 @@
     "permissions": [
         "tabs",
         "bookmarks",
-        "scripting",
         "storage"
     ],
     "icons": {
         "16": "asset/img/16.png",
         "32": "asset/img/32.png",
-        "36": "asset/img/36.png",
-        "48": "asset/img/48.png",
-        "72": "asset/img/72.png",
-        "96": "asset/img/96.png",
-        "120": "asset/img/120.png",
-        "128": "asset/img/128.png"
+        "180": "asset/img/180.png",
+        "192": "asset/img/192.png",
+        "512": "asset/img/512.png"
     },
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
             "16": "asset/img/16.png",
             "32": "asset/img/32.png",
-            "36": "asset/img/36.png",
-            "48": "asset/img/48.png",
-            "72": "asset/img/72.png",
-            "96": "asset/img/96.png",
-            "120": "asset/img/120.png",
-            "128": "asset/img/128.png"
+            "180": "asset/img/180.png",
+            "192": "asset/img/192.png",
+            "512": "asset/img/512.png"
         }
     }
 }

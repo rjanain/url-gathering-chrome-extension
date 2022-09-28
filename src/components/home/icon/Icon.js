@@ -8,11 +8,11 @@ function CreateIcon(props) {
         <>
             <Figure>
                 <Figure.Image
-                    onClick={props.onClick}
+                    onMouseEnter={props.onClick}
                     id={props.index}
                     height={40}
                     width={40}
-                    src={props.favIconUrl}
+                    src={props.favIconUrl ? props.favIconUrl : "asset/img/favicon.ico"}
                      />
 
                 <Figure.Caption>

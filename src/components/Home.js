@@ -11,7 +11,7 @@ export function Header() {
         <>
             <ul className="nav nav-tabs">
                 <li className="nav-item">
-                    <a className="nav-link active" data-bs-toggle="tab" href="#home">Home</a>
+                    <a className="nav-link active" data-bs-toggle="tab" href="#home">App</a>
                 </li>
                 <li className="nav-item">
                     <a className="nav-link" data-bs-toggle="tab" href="#option">Settings</a>
