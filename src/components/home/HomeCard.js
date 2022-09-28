@@ -32,10 +32,10 @@ export const HomeCard = (props) => {
 
 
 
-  const handleListClickEvent = (e) => {
+  const handleListClickEvent = async (e) => {
     console.log("You have clicked: " + e.target.id)
     console.log(e)
-    navigator.clipboard.writeText(getLink(e.target.id))
+    await navigator.clipboard.writeText(getLink(e.target.id))
     setCopyRequest({
       [e.target.id]: true
     })

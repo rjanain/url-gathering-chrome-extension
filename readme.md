@@ -1,6 +1,23 @@
 # Chrome Extension To Gather URL From Browser
 
-In this project we create a chrome extension to gather all url that are open on the current wbrowser window. It will also give you an option to directly copy those information directly to your clipboard in different format likes, Markdown, CSV, html, and plain text.  
+By using this chrome extension we can gather all url that are open on the current browser window and directly copy those information into your clipboard in different format likes, Markdown, CSV, html, and plain text. 
+
+
+# Chrome Web Store Description
+
+
+By using this chrome extension we can gather all url that are open on the current browser window and directly copy those information into your clipboard in different format likes, Markdown, CSV, html, and plain text. 
+
+- This is an initial working version with the following features.
+
+    - Display all icons corresponding to each page that is currently open on the active browser window. It will not takes `chrome` pages likes `chrome://` or `chrome-extension://` into the consideration. The icons appeared on the app as per the corresponding pages open on the browser. 
+
+    - Upon clicking an icon, the url corresponds to the page will be copied to your clipboard automatically.
+
+    - Also you will find a `Copy To All` button to copy all urls that are currently open on your active browser window  into your clipboard. Currently we are using a empty line space in between two consecutive url while coping. In the next version we will add an feature so that user can change it as per their requirement.
+
+
+
 
 ## Dev Deployment
 

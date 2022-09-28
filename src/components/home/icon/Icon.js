@@ -8,7 +8,7 @@ function CreateIcon(props) {
         <>
             <Figure>
                 <Figure.Image
-                    onMouseEnter={props.onClick}
+                    onClick={props.onClick}
                     id={props.index}
                     height={40}
                     width={40}
