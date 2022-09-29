@@ -32,6 +32,17 @@ and this project adheres to [Semantic Versioning].
 <!-- Links -->
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[changelog]: ./CHANGELOG.md
+[changelog-badge]: https://img.shields.io/badge/changelog-Keep%20a%20Changelog%20v1.1.0-%23E05735
+[license]: ./LICENSE
+[rbenv]: https://github.com/rbenv/rbenv
+[ruby-version]: .ruby-version
+[source]: source/
+[pull-request]: https://help.github.com/articles/creating-a-pull-request/
+[fork]: https://help.github.com/articles/fork-a-repo/
+[version-badge]: https://img.shields.io/badge/version-1.1.0-blue.svg
+[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
+
 
 <!-- Versions -->
 [unreleased]: https://github.com/rjanain/url-gathering-chrome-extension/compare/v0.0.2...HEAD

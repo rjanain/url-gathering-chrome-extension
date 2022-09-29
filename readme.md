@@ -41,5 +41,13 @@ If you want to use this code to create another chrome extension then you can als
 
 
 
+<!-- Links -->
 
-
+[changelog]: ./CHANGELOG.md
+[changelog-badge]: https://img.shields.io/badge/changelog-Keep%20a%20Changelog%20v1.1.0-%23E05735
+[license]: ./LICENSE
+[source]: src/
+[pull-request]: https://help.github.com/articles/creating-a-pull-request/
+[fork]: https://help.github.com/articles/fork-a-repo/
+[version-badge]: https://img.shields.io/badge/version-0.0.2-blue.svg
+[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
