@@ -1,6 +1,7 @@
 # Chrome Extension To Gather URL From Browser (<img src="./public/asset/img/180.png" height=16 alt="Chrome Extension " />)
 
-[![Keep a Changelog v1.1.0 badge][changelog-badge]][changelog] [![Version 1.1.0 Badge][version-badge]][changelog] [![MIT License Badge][license-badge]][license]
+[![Keep a Changelog v1.1.0 badge][changelog-badge]][changelog] [![Version 1.1.0 Badge][version-badge]][changelog] [![MIT License Badge][license-badge]][license][![GitHub issues][github-issue]][issue]
+![GitHub commit activity][commit-activity]
 
 By using this chrome extension we can gather all url that are open on the current browser window and directly copy those information into your clipboard in different format likes, Markdown, CSV, html, and plain text. 
 
@@ -50,4 +51,7 @@ If you want to use this code to create another chrome extension then you can als
 [pull-request]: https://help.github.com/articles/creating-a-pull-request/
 [fork]: https://help.github.com/articles/fork-a-repo/
 [version-badge]: https://img.shields.io/badge/version-0.0.2-blue.svg
-[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
+[license-badge]: https://img.shields.io/github/license/rjanain/url-gathering-chrome-extension
+[github-issue]: https://img.shields.io/github/issues/rjanain/url-gathering-chrome-extension
+[issue]: https://github.com/rjanain/url-gathering-chrome-extension/issues
+[commit-activity]: https://img.shields.io/github/commit-activity/m/rjanain/url-gathering-chrome-extension
