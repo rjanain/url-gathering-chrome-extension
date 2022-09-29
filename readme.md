@@ -1,4 +1,6 @@
-# Chrome Extension To Gather URL From Browser
+# Chrome Extension To Gather URL From Browser (<img src="./public/asset/img/180.png" height=16 alt="Chrome Extension " />)
+
+[![Keep a Changelog v1.1.0 badge][changelog-badge]][changelog] [![Version 1.1.0 Badge][version-badge]][changelog] [![MIT License Badge][license-badge]][license]
 
 By using this chrome extension we can gather all url that are open on the current browser window and directly copy those information into your clipboard in different format likes, Markdown, CSV, html, and plain text. 
 
@@ -19,7 +21,7 @@ By using this chrome extension we can gather all url that are open on the curren
 
 
 
-## Dev Deployment
+## Development
 
 In order to deploy this extension into clone the project from this reposotory and run `npm install`. Note that in the [package.json](./package.json) following `scripts` are defined.
 
