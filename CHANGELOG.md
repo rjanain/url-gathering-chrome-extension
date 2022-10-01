@@ -7,7 +7,17 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
-- /
+## [0.0.3] - 2022-10-01
+
+### Added
+
+- Now user can choose the output format by going `Settings` tab. Currently, there five options are avilable: `PlainText`, `CSV`, `JSON`, `Markdown`, and `HTML`. User can also give the preference whether they want to include the page title in the output. 
+
+- User settings will be store in the `chrome.storage.sync` and so it will be automatically sync with chrome browser on which user installed this extension. 
+
+- The copied badge that appear upon clicking on icon/button in the App page will disapper automatically after five seconds.
+
+- Removed unnecessary permission like `Bookmark` has been removed from `manifest.json`.
 
 ## [0.0.2] - 2022-09-29
 

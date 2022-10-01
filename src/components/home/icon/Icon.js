@@ -10,9 +10,10 @@ function CreateIcon(props) {
                 <Figure.Image
                     onClick={props.onClick}
                     id={props.index}
-                    height={40}
-                    width={40}
+                    height={props.active ? "60" : "40"}
+                    width={props.active ? "60" : "40"}
                     src={props.favIconUrl ? props.favIconUrl : "asset/img/favicon.ico"}
+                    style={{borderRadius: "100px"}}
                      />
 
                 <Figure.Caption>

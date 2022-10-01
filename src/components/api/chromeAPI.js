@@ -1,4 +1,4 @@
-import { unique } from "webpack-merge"
+
 
 /**
  * Get id, windowId, name and url of each tab in the current window
@@ -11,21 +11,22 @@ export const getTabs = async () => {
     }
 
     // `tab` will either be a `tabs.Tab` instance or `undefined`.
-    let tabs= await chrome.tabs.query(queryOptions)
+    let tabs = await chrome.tabs.query(queryOptions)
     tabs = processTabData(tabs)
     let response = []
 
     tabs.forEach(el => {
         response.push({
             id: el.id ? el.id : -1,
-            windowId: el.windowId ? el.windowId : -1,
+            windowId: el?.windowId,
             favIconUrl: el?.favIconUrl,
             title: el.title,
-            url: el.url
+            url: el.url,
+            active: el.active
         })
     })
 
-    console.log("Tabs:", tabs)
+     console.log("Tabs:", tabs)
     return response
 }
 
@@ -41,14 +42,17 @@ const processTabData = (tabs) => {
         tabs.reduce(
             (acc, cur) => Object.assign(acc, { [cur.url]: cur }), {}
         ))
-    
+
     /* Remove chrome's pages */
-    const filteredData = uniqueData.filter( (el) => {
-        return el.url.match('^chrome')  ? false : true 
+    const filteredData = uniqueData.filter((el) => {
+        const regularExp = new RegExp('^(http://|https://|ssh://|ftp://)')
+        return (
+            el.url.match(regularExp) ? true : false
+        )
     })
 
 
     // console.log('filtered', filteredData)
 
-    return(filteredData)
+    return (filteredData)
 }

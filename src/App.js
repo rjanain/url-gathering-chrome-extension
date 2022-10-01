@@ -9,16 +9,16 @@ function App() {
 
 
   return (
-    <> 
+    <>
       <div className="container text-center">
         <div className="row">
           <div className="col-md-12">
             <div id="myTabContent" className="tab-content">
-                <Header/>
+              <Header />
 
-                <HomeTab  />
+              <HomeTab />
 
-                <OptionTab/>
+              <OptionTab />
 
             </div>
           </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Stack } from "react-bootstrap";
-import { getTabs } from "./API/chromeAPI"
+import { getTabs } from "../api/chromeAPI"
+import { getLink } from "../api/copyAPI";
 import CopyAllButton from "./icon/CopyAllButton";
 import CreateIcon from "./icon/Icon"
 
@@ -9,16 +10,6 @@ export const HomeCard = (props) => {
 
   const [tabs, setTabs] = useState([])
   const [copyRequest, setCopyRequest] = useState({})
-
-  const getLink = (id) => {
-    const seperator = "\r\n\r\n" // for new line
-    const res = (id == "copyAll")
-      ? tabs.map(el => { return el.url }).join(seperator)
-      : tabs[id].url
-
-    return res
-  }
-
 
   useEffect(() => {
     getTabs().then(
@@ -35,16 +26,26 @@ export const HomeCard = (props) => {
   const handleListClickEvent = async (e) => {
     console.log("You have clicked: " + e.target.id)
     console.log(e)
-    await navigator.clipboard.writeText(getLink(e.target.id))
+    await navigator.clipboard.writeText(await getLink(e.target.id, tabs))
     setCopyRequest({
       [e.target.id]: true
     })
+    setTimeout(() => {
+      // Removed copied badge after few seconds
+      setCopyRequest({
+        [e.target.id]: false
+      })
+    }, 5000)
   }
 
 
 
   return (
     <>
+      <div className="mb-2">
+        <small>The icon of the active page will appear larger than other icons.</small>
+      </div>
+
 
       <Stack
         direction="horizontal"
@@ -61,6 +62,7 @@ export const HomeCard = (props) => {
                   title={el?.title}
                   url={el?.url}
                   favIconUrl={el?.favIconUrl}
+                  active={el?.active}
                   isCopied={copyRequest[index]}
                 />
               )
@@ -68,7 +70,11 @@ export const HomeCard = (props) => {
             : null
         }
 
+
+
       </Stack>
+
+
 
       <CopyAllButton
         onClick={handleListClickEvent}
