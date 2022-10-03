@@ -1,11 +1,14 @@
 
 
-# Automaic URL Gathering Tool
+# URL Gathering Tool
 
  
 
 ### Todo
 
+- [ ] Add an extra feature to open all url in a browser window either from clipboard or by importing the file which they exported earlier.  
+- [ ] Provide an extra feature on the APP to export the data.  
+- [ ] Add an option to select only highlighted tabs that user select by using CTRL key. Currently, by default it will consider all valid url on the active window.  
 
 ### In Progress
 

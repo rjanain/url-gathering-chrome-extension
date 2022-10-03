@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
-## [0.0.3] - 2022-10-01
+
+## [0.0.3-beta] - 2022-10-01
+
+## Chnaged
+
+- Changed the title of the project and page description. 
 
 ### Added
 

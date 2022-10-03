@@ -1,4 +1,4 @@
-# Chrome Extension To Gather URL From Browser (<img src="./public/asset/img/180.png" height=16 alt="Chrome Extension " />)
+# URL Gathering Tool - Chrome Extension (<img src="./public/asset/img/180.png" height=16 alt="Chrome Extension " />)
 
 [![Keep a Changelog v1.1.0 badge][changelog-badge]][changelog] 
 [![Version 1.1.0 Badge][version-badge]][changelog] 
@@ -6,7 +6,7 @@
 [![GitHub issues][github-issue]][issue]
 ![GitHub commit activity][commit-activity]
 
-By using this chrome extension we can gather all url that are open on the current browser window and directly copy those information into your clipboard in different format likes, Markdown, CSV, html, and plain text. 
+By using this chrome extension we can  gather all url that are open on the current browser window and directly copy those information into your clipboard in different format likes, Markdown, CSV, html, and plain text. 
 
 
 # Chrome Web Store Description

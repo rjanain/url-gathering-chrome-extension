@@ -1,7 +1,7 @@
 {
-  "name": "automic-url-gathering",
+  "name": "url-gathering-tool",
   "version": "1.0.0",
-  "description": "An  extension that gathers all URLs currently open in browser, allowing them to be easily copied.",
+  "description": "An extension that gathers all URLs currently open in browser, allowing them to be easily copied.",
   "main": "index.js",
   "scripts": {
     "dev": "webpack --watch --config webpack.dev.js",
