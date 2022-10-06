@@ -1,6 +1,5 @@
 import React from "react"
 import { Button } from "react-bootstrap"
-import Badge from 'react-bootstrap/Badge';
 
 const CopyAllButton = (props) => {
 
@@ -8,22 +7,20 @@ const CopyAllButton = (props) => {
         <>
             <Button
                 size="sm"
-                variant="outline-warning"
+                variant={props.variant}
                 id={props.id}
                 onClick={props.onClick}
             >
-                Copy All
+                { 
+                props.isCopied ? (
+                    <i className="bi bi-check-circle-fill text-right"></i> 
+                ) : null 
+                }
+
+                {" " + props.text} 
             </Button>
 
-            {
-                props.isCopied ? (
-                    <div className="mt-1">
-                        <Badge bg="success" pill>
-                            All Url has been copied
-                        </Badge>
-                    </div>
-                ) : null
-            }
+            
 
         </>
 

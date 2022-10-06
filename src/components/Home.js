@@ -31,7 +31,7 @@ export function HomeTab(props) {
                     border="dark"
                     className="mt-1"
                 >
-                    <Card.Header>Automic URL Gathering</Card.Header>
+                    <Card.Header>URL Gathering Tool</Card.Header>
                     <Card.Body>
                         <HomeCard />
                     </Card.Body>

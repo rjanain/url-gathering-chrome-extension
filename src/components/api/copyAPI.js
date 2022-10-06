@@ -37,7 +37,7 @@ function makeMarkdownText(title, url, includeName) {
 
 function makeCSVText(title, url, includeName) {
     console.log(includeName)
-    return  includeName ? ( '"' +  (title && title.trim() ? title : url).replace('"', '\\"') + '",' ) : '' 
+    return  (includeName ? ( '"' +  (title && title.trim() ? title : url).replace('"', '\\"') + '",' ) : '') 
     + '"'+ url.replace('"', '\\"')  + '"'
 }
 
@@ -56,7 +56,7 @@ function makePlainText(title, url, includeName) {
 
 function convertedData(data, id, format, includeName, seperator) {
 
-    if (id != 'copyAll') {
+    if (id != 'copyAll' && id != 'copyHighlighted') {
         // If a single icon press
         switch (format) {
             case 'markdown':

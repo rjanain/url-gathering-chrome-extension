@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import Badge from 'react-bootstrap/Badge';
 import { Stack } from "react-bootstrap";
 import { getTabs } from "../api/chromeAPI"
 import { getLink } from "../api/copyAPI";
@@ -11,6 +12,7 @@ export const HomeCard = (props) => {
   const [tabs, setTabs] = useState([])
   const [copyRequest, setCopyRequest] = useState({})
 
+
   useEffect(() => {
     getTabs().then(
       (res) => {
@@ -18,6 +20,8 @@ export const HomeCard = (props) => {
         setTabs(res)
       }
     )
+
+
   }
     , [])
 
@@ -26,10 +30,25 @@ export const HomeCard = (props) => {
   const handleListClickEvent = async (e) => {
     console.log("You have clicked: " + e.target.id)
     console.log(e)
-    await navigator.clipboard.writeText(await getLink(e.target.id, tabs))
+
+    var filteredTabs = tabs;
+
+
+    if (e.target.id === 'copyHighlighted') {
+      // Remove all non-highlighted tabs
+      filteredTabs = tabs.filter((el) => {
+        return (el.highlighted)
+      })
+
+    }
+
+
+    await navigator.clipboard.writeText(await getLink(e.target.id, filteredTabs))
+
     setCopyRequest({
       [e.target.id]: true
     })
+    
     setTimeout(() => {
       // Removed copied badge after few seconds
       setCopyRequest({
@@ -75,12 +94,52 @@ export const HomeCard = (props) => {
       </Stack>
 
 
+      <Stack
+        direction="vertical"
+        className="mx-auto"
+        gap={2}
+      >
 
-      <CopyAllButton
-        onClick={handleListClickEvent}
-        isCopied={copyRequest["copyAll"]}
-        id="copyAll"
-      />
+
+        <CopyAllButton
+          onClick={handleListClickEvent}
+          isCopied={copyRequest["copyAll"]}
+          text={"Copy All"}
+          variant="outline-warning"
+          id="copyAll"
+        />
+
+        {
+          tabs.filter(el => { return (el.highlighted) }).length > 0
+            ? (
+              <CopyAllButton
+                onClick={handleListClickEvent}
+                variant="outline-dark"
+                isCopied={copyRequest["copyHighlighted"]}
+                id="copyHighlighted"
+                text={"Copy Highlighted"}
+              />
+            )
+            : null
+        }
+
+
+        {
+          copyRequest["copyHighlighted"] || copyRequest["copyAll"] 
+          ? (
+            <div className="mt-1">
+              <Badge bg="success" pill>
+                All Url has been copied
+              </Badge>
+            </div>
+          ) : null
+        }
+
+
+
+
+
+      </Stack>
     </>
   );
 }

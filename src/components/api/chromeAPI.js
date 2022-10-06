@@ -22,6 +22,7 @@ export const getTabs = async () => {
             favIconUrl: el?.favIconUrl,
             title: el.title,
             url: el.url,
+            highlighted : el.highlighted, 
             active: el.active
         })
     })
@@ -29,6 +30,9 @@ export const getTabs = async () => {
      console.log("Tabs:", tabs)
     return response
 }
+
+
+
 
 /**
  * Process the tabs data by removing duplicates entries and unnecessary pages
