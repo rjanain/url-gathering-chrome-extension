@@ -20,8 +20,6 @@ export const HomeCard = (props) => {
         setTabs(res)
       }
     )
-
-
   }
     , [])
 
@@ -54,7 +52,7 @@ export const HomeCard = (props) => {
       setCopyRequest({
         [e.target.id]: false
       })
-    }, 5000)
+    }, 1000)
   }
 
 

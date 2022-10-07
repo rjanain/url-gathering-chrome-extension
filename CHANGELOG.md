@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning].
 ### Fixed
 - Fixed the [bug](https://github.com/rjanain/url-gathering-chrome-extension/issues/2) that causing break after page title when the selcted format is `csv`. 
 
+
+
 ### Added
 
 - Added an option to copy only highlighted tabs that user select by using `CTRL` key.  
