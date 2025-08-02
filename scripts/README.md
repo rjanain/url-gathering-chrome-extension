@@ -1,6 +1,33 @@
 # Scripts Directory
 
-This directory co# Bump minor version (new features)
+This directory contains automation scripts for building, testing, and managing the URL Gathering Tool extension.
+
+## 🧪 Cross-Browser Testing Scripts
+
+### Quick Start
+```bash
+# Test all browsers
+npm run test
+
+# Test specific browsers
+npm run test:chrome
+npm run test:firefox
+npm run test:safari   # macOS only
+npm run test:edge
+
+# Validate extension
+npm run validate
+```
+
+### Testing Scripts
+- `test-chrome.sh` - Chrome testing automation
+- `test-firefox.sh` - Firefox testing automation
+- `test-safari.sh` - Safari conversion and testing
+- `test-edge.sh` - Edge testing automation
+- `test-all-browsers.sh` - Cross-browser test runner
+- `validate-extension.sh` - Pre-test validation
+
+## 🔧 Build Scripts# Bump minor version (new features)
 ./scripts/version-bump.sh minor "Add new export format"
 
 # Bump major version (breaking changes)

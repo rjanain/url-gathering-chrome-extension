@@ -21,12 +21,19 @@
     "package:firefox": "npm run build:firefox && npm run zip:firefox",
     "package:safari": "npm run build:safari && npm run zip:safari",
     "verify": "./scripts/verify-extension.sh",
+    "validate": "./scripts/validate-extension.sh",
     "prebuild": "./scripts/check-version.sh",
     "version:patch": "./scripts/version-bump.sh patch",
     "version:minor": "./scripts/version-bump.sh minor",
     "version:major": "./scripts/version-bump.sh major",
     "version:check": "./scripts/check-version.sh",
-    "version:info": "cat version.json | jq ."
+    "version:info": "cat version.json | jq .",
+    "test:chrome": "./scripts/test-chrome.sh",
+    "test:firefox": "./scripts/test-firefox.sh",
+    "test:safari": "./scripts/test-safari.sh",
+    "test:edge": "./scripts/test-edge.sh",
+    "test:all": "./scripts/test-all-browsers.sh all",
+    "test": "./scripts/test-all-browsers.sh"
   },
   "keywords": [
     "URL",
