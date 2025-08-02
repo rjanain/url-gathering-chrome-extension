@@ -112,7 +112,7 @@ jobs:
     name: Create Release Packages
     runs-on: ubuntu-latest
     needs: [build, test]
-    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/3-revamp-extension-for-cross-browser-compatibility-chrome-firefox-safari-edge'
 
     steps:
       - name: Checkout Repository
