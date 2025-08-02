@@ -1,5 +1,7 @@
-// Use the browser global or fallback to chrome
-const api = (typeof browser !== 'undefined') ? browser : chrome;
+import { Browser } from './browser.js';
+
+// Use the browser API abstraction
+const api = Browser.api.getAPI();
 
 /**
  * Get the current date and time
