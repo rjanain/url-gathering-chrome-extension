@@ -1,6 +1,14 @@
 # Scripts Directory
 
-This directory contains utility scripts for building, versioning, and managing the URL Gathering Tool extension.
+This directory co# Bump minor version (new features)
+./scripts/version-bump.sh minor "Add new export format"
+
+# Bump major version (breaking changes)
+./scripts/version-bump.sh major "Migrate to Manifest V3"
+
+# Verify extension build
+./scripts/verify-extension.sh
+``` utility scripts for building, versioning, and managing the URL Gathering Tool extension.
 
 ## 📋 Script Index
 
@@ -9,6 +17,7 @@ This directory contains utility scripts for building, versioning, and managing t
 | **build-manifest.sh** | Build browser-specific manifests | `./scripts/build-manifest.sh [chrome\|firefox\|safari\|all]` |
 | **version-bump.sh** | Automated version management | `./scripts/version-bump.sh [major\|minor\|patch] "message"` |
 | **check-version.sh** | Version consistency validation | `./scripts/check-version.sh` |
+| **verify-extension.sh** | Verify extension build completeness | `./scripts/verify-extension.sh` |
 
 ## 🚀 Quick Start
 
@@ -76,9 +85,18 @@ This directory contains utility scripts for building, versioning, and managing t
 - ✅ Displays comprehensive version information
 - ✅ Detects inconsistencies and provides fix suggestions
 
+### verify-extension.sh
+**Purpose**: Validates that Chrome extension build is complete and ready to load.
+
+**Features**:
+- ✅ Checks all required manifest and script files
+- ✅ Validates asset directory and icons
+- ✅ Provides loading instructions for Chrome
+- ✅ Clear success/failure reporting
+
 **Exit Codes**:
-- `0`: All versions consistent
-- `1`: Version inconsistencies found
+- `0`: Extension build is complete
+- `1`: Missing required files
 
 ## 🔧 Dependencies
 
@@ -139,7 +157,8 @@ All scripts are integrated with npm for convenient usage:
     "version:patch": "./scripts/version-bump.sh patch",
     "version:minor": "./scripts/version-bump.sh minor",
     "version:major": "./scripts/version-bump.sh major",
-    "version:check": "./scripts/check-version.sh"
+    "version:check": "./scripts/check-version.sh",
+    "verify": "./scripts/verify-extension.sh"
   }
 }
 ```

@@ -9,7 +9,7 @@ PUBLIC_DIR="./public"
 build_for_browser() {
     local browser=$1
     echo "Building manifest for $browser..."
-    
+
     case $browser in
         "chrome"|"edge")
             cp "$PUBLIC_DIR/manifest.json" "$PUBLIC_DIR/manifest-active.json"
@@ -29,25 +29,35 @@ build_for_browser() {
             exit 1
             ;;
     esac
+
+    # Copy webpack build output for single browser builds
+    if [ -d "dist/vendor" ]; then
+        echo "✓ Webpack build output found, extension ready to load"
+    else
+        echo "⚠️  No webpack build found. Run 'npm run build' first."
+    fi
 }
 
 if [ "$BROWSER" = "all" ]; then
     echo "Building manifests for all browsers..."
-    
+
     # Create browser-specific output directories
     mkdir -p dist/chrome dist/firefox dist/safari
-    
+
     # Copy base files to each directory
     for browser_dir in chrome firefox safari; do
         cp -r "$PUBLIC_DIR"/* "dist/$browser_dir/"
-        cp -r src/ "dist/$browser_dir/"
+        # Copy webpack build output (vendor directory)
+        if [ -d "dist/vendor" ]; then
+            cp -r dist/vendor "dist/$browser_dir/"
+        fi
     done
-    
+
     # Copy appropriate manifests
     cp "$PUBLIC_DIR/manifest.json" "dist/chrome/manifest.json"
     cp "$PUBLIC_DIR/manifest-firefox.json" "dist/firefox/manifest.json"
     cp "$PUBLIC_DIR/manifest-safari.json" "dist/safari/manifest.json"
-    
+
     echo "✓ All browser builds ready in dist/ directory"
 else
     build_for_browser "$BROWSER"
