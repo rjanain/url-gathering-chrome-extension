@@ -33,7 +33,11 @@
     "test:safari": "./scripts/test-safari.sh",
     "test:edge": "./scripts/test-edge.sh",
     "test:all": "./scripts/test-all-browsers.sh all",
-    "test": "./scripts/test-all-browsers.sh"
+    "test": "./scripts/test-all-browsers.sh",
+    "store:prepare": "./scripts/prepare-store-assets.sh",
+    "store:validate": "./store-assets/validate-assets.sh",
+    "firefox:lint": "./scripts/validate-firefox.sh",
+    "store:firefox": "npm run firefox:lint && echo 'Firefox validation complete. Check store-assets/firefox/ for submission details.'"
   },
   "keywords": [
     "URL",
