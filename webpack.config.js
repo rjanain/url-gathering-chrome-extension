@@ -5,14 +5,14 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: {
-        serviceWorker: './src/serviceWorker.js',
-        contentScript: './src/contentScript.js',
-        popup: './src/popup.js'
+        serviceWorker: './src/background/serviceWorker.js',
+        contentScript: './src/content/contentScript.js',
+        popup: './src/popup/index.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist/vendor'),
-        filename: '[name].js', 
-		clean: true, 
+        filename: '[name].js',
+		clean: true,
     },
     module: {
         rules: [{
@@ -34,7 +34,7 @@ module.exports = {
     plugins: [
     new CopyPlugin({
         patterns: [
-            { 
+            {
                 from: "public",
                 to: path.resolve(__dirname, 'dist')
             },

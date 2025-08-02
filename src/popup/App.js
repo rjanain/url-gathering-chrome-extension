@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-import { Header, HomeTab, OptionTab } from './components/Home'
+import { Header, HomeTab, OptionTab } from '../shared/components/Home'
 
 
 
