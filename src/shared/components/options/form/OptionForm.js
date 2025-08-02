@@ -4,6 +4,8 @@ import { saveToChromeStorage } from "../../../../utils"
 import ShowAlert from "./ShowAlert"
 import ShowToast from "./ShowToast"
 
+// Use the browser global or fallback to chrome
+const api = (typeof browser !== 'undefined') ? browser : chrome;
 
 const OptionForm = (props) => {
     const [optionform, setOptionform] = useState({})
@@ -12,9 +14,11 @@ const OptionForm = (props) => {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
-        chrome.storage.sync.get(null, result => {
+        api.storage.sync.get(null).then(result => {
             setOptionform(result)
             console.log("Fetched result from storage", result)
+        }).catch(error => {
+            console.error("Failed to fetch from storage:", error)
         })
     }, [])
 

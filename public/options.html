@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+<he                        <div class="mt-3">
+                            <button type="button" class="btn btn-primary" onclick="(typeof browser !== 'undefined' ? browser : chrome).tabs.create({url: (typeof browser !== 'undefined' ? browser : chrome).runtime.getURL('popup.html')})">
+                                Open Extension Popup
+                            </button>
+                        </div>   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Gathering Tool - Options</title>
     <link rel="stylesheet" href="assets/css/style.css">
@@ -35,7 +38,7 @@
                         </ul>
 
                         <div class="mt-3">
-                            <button type="button" class="btn btn-primary" onclick="chrome.tabs.create({url: chrome.runtime.getURL('popup.html')})">
+                            <button type="button" class="btn btn-primary" onclick="browser.tabs.create({url: browser.runtime.getURL('popup.html')})">
                                 Open Extension Popup
                             </button>
                         </div>
@@ -52,6 +55,7 @@
         </div>
     </div>
 
+    <script src="assets/js/browser-polyfill.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

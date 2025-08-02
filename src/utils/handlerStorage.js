@@ -1,5 +1,8 @@
+// Use the browser global or fallback to chrome
+const api = (typeof browser !== 'undefined') ? browser : chrome;
+
 /**
- * Get the current date and time 
+ * Get the current date and time
  * @returns Current date and time
  */
 export function getCurrentDateTime() {
@@ -32,18 +35,19 @@ export function getCurrentTime() {
 
 /**
  * Store the data in the local storage
- * @param {String} key 
- * @param {String} value 
+ * @param {String} key
+ * @param {String} value
  */
-export const saveToChromeStorage = (key, value) => {
+export const saveToChromeStorage = async (key, value) => {
     let options = {}
     options[key] = value
-    chrome.storage.sync.set(
-        options, () => {
-            console.log("Option has been saved to the local storage.")
-        })
+    try {
+        await api.storage.sync.set(options);
+        console.log("Option has been saved to the local storage.");
+    } catch (error) {
+        console.error("Failed to save to storage:", error);
+    }
 }
-
 
 
 
@@ -52,17 +56,12 @@ export const saveToChromeStorage = (key, value) => {
 //
 // Note: Once the Storage API gains promise support, this function
 // can be greatly simplified.
-export function getAllStorageSyncData() {
-    // Immediately return a promise and start asynchronous work
-    return new Promise((resolve, reject) => {
-        // Asynchronously fetch all data from storage.sync.
-        chrome.storage.sync.get(null, (items) => {
-            // Pass any observed errors down the promise chain.
-            if (chrome.runtime.lastError) {
-                return reject(chrome.runtime.lastError);
-            }
-            // Pass the data retrieved from storage down the promise chain.
-            resolve(items);
-        });
-    });
+export async function getAllStorageSyncData() {
+    try {
+        // Use api which will be either browser (with polyfill) or chrome
+        const items = await api.storage.sync.get(null);
+        return items;
+    } catch (error) {
+        throw error;
+    }
 }

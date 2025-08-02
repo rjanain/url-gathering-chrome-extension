@@ -1,4 +1,6 @@
 
+// Use the browser global or fallback to chrome
+const api = (typeof browser !== 'undefined') ? browser : chrome;
 
 /**
  * Get id, windowId, name and url of each tab in the current window
@@ -11,7 +13,7 @@ export const getTabs = async () => {
     }
 
     // `tab` will either be a `tabs.Tab` instance or `undefined`.
-    let tabs = await chrome.tabs.query(queryOptions)
+    let tabs = await api.tabs.query(queryOptions)
     tabs = processTabData(tabs)
     let response = []
 
@@ -22,7 +24,7 @@ export const getTabs = async () => {
             favIconUrl: el?.favIconUrl,
             title: el.title,
             url: el.url,
-            highlighted : el.highlighted, 
+            highlighted : el.highlighted,
             active: el.active
         })
     })
