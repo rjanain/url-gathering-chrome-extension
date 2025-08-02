@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "name": "URL Gathering Tool",
+  "description": "Cross-browser extension with enhanced features",
+  "previousVersion": "0.0.4",
+  "releaseDate": "2025-08-02",
+  "releaseType": "major",
+  "changes": {
+    "major": [
+      "Cross-browser compatibility (Chrome, Firefox, Safari, Edge)",
+      "Manifest V3 implementation for Chrome/Edge",
+      "Complete project restructure for maintainability"
+    ],
+    "minor": [],
+    "patch": []
+  },
+  "browsers": {
+    "chrome": {
+      "minVersion": "88",
+      "manifestVersion": 3
+    },
+    "firefox": {
+      "minVersion": "78",
+      "manifestVersion": 2
+    },
+    "safari": {
+      "minVersion": "14",
+      "manifestVersion": 2
+    },
+    "edge": {
+      "minVersion": "88",
+      "manifestVersion": 3
+    }
+  }
+}

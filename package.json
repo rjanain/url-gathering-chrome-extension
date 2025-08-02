@@ -5,8 +5,18 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --watch --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
-    "stat": "webpack --profile --json > webpack-stats.json"
+    "build": "npm run version:check && webpack --config webpack.prod.js",
+    "stat": "webpack --profile --json > webpack-stats.json",
+    "build:chrome": "./scripts/build-manifest.sh chrome && npm run build",
+    "build:firefox": "./scripts/build-manifest.sh firefox && npm run build",
+    "build:safari": "./scripts/build-manifest.sh safari && npm run build",
+    "build:all": "./scripts/build-manifest.sh all && npm run build",
+    "prebuild": "./scripts/check-version.sh",
+    "version:patch": "./scripts/version-bump.sh patch",
+    "version:minor": "./scripts/version-bump.sh minor",
+    "version:major": "./scripts/version-bump.sh major",
+    "version:check": "./scripts/check-version.sh",
+    "version:info": "cat version.json | jq ."
   },
   "keywords": [
     "URL",

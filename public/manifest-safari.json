@@ -2,24 +2,20 @@
     "name": "URL Gathering Tool",
     "description": "A cross-browser extension that gathers all URLs currently open in browser, allowing them to be easily copied in multiple formats (Markdown, CSV, HTML, JSON, plain text).",
     "version": "1.0.0",
-    "manifest_version": 3,
-    "offline_enabled": true,
+    "manifest_version": 2,
 
     "author": "Dr. Rakesh Jana",
     "homepage_url": "https://rjana.in",
 
     "background": {
-        "service_worker": "vendor/serviceWorker.js",
-        "type": "module"
+        "scripts": ["vendor/serviceWorker.js"],
+        "persistent": false
     },
 
     "permissions": [
         "tabs",
         "storage",
-        "activeTab"
-    ],
-
-    "host_permissions": [
+        "activeTab",
         "http://*/*",
         "https://*/*"
     ],
@@ -28,13 +24,10 @@
         "16": "assets/img/16.png",
         "32": "assets/img/32.png",
         "48": "assets/img/32.png",
-        "128": "assets/img/180.png",
-        "180": "assets/img/180.png",
-        "192": "assets/img/192.png",
-        "512": "assets/img/512.png"
+        "128": "assets/img/180.png"
     },
 
-    "action": {
+    "browser_action": {
         "default_popup": "popup.html",
         "default_title": "URL Gathering Tool",
         "default_icon": {
@@ -55,24 +48,15 @@
     ],
 
     "web_accessible_resources": [
-        {
-            "resources": [
-                "assets/img/*.png",
-                "assets/css/*.css",
-                "assets/js/*.js"
-            ],
-            "matches": ["http://*/*", "https://*/*"]
-        }
+        "assets/img/*.png",
+        "assets/css/*.css",
+        "assets/js/*.js"
     ],
 
-    "minimum_chrome_version": "88",
-
-    "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'; frame-ancestors 'none';"
-    },
+    "content_security_policy": "script-src 'self'; object-src 'self';",
 
     "commands": {
-        "_execute_action": {
+        "_execute_browser_action": {
             "suggested_key": {
                 "default": "Ctrl+Shift+U",
                 "mac": "Command+Shift+U"
@@ -88,9 +72,5 @@
         }
     },
 
-    "options_page": "options.html",
-
-    "externally_connectable": {
-        "matches": []
-    }
+    "options_page": "options.html"
 }

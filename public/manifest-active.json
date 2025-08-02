@@ -1,29 +1,29 @@
 {
     "name": "URL Gathering Tool",
     "description": "A cross-browser extension that gathers all URLs currently open in browser, allowing them to be easily copied in multiple formats (Markdown, CSV, HTML, JSON, plain text).",
-    "version": "1.0.0",
+    "version": "0.0.4",
     "manifest_version": 3,
     "offline_enabled": true,
-
+    
     "author": "Dr. Rakesh Jana",
     "homepage_url": "https://rjana.in",
-
+    
     "background": {
         "service_worker": "vendor/serviceWorker.js",
         "type": "module"
     },
-
+    
     "permissions": [
         "tabs",
         "storage",
         "activeTab"
     ],
-
+    
     "host_permissions": [
         "http://*/*",
         "https://*/*"
     ],
-
+    
     "icons": {
         "16": "assets/img/16.png",
         "32": "assets/img/32.png",
@@ -33,7 +33,7 @@
         "192": "assets/img/192.png",
         "512": "assets/img/512.png"
     },
-
+    
     "action": {
         "default_popup": "popup.html",
         "default_title": "URL Gathering Tool",
@@ -44,7 +44,7 @@
             "128": "assets/img/180.png"
         }
     },
-
+    
     "content_scripts": [
         {
             "matches": ["http://*/*", "https://*/*"],
@@ -53,7 +53,7 @@
             "all_frames": false
         }
     ],
-
+    
     "web_accessible_resources": [
         {
             "resources": [
@@ -64,13 +64,13 @@
             "matches": ["http://*/*", "https://*/*"]
         }
     ],
-
+    
     "minimum_chrome_version": "88",
-
+    
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'; frame-ancestors 'none';"
     },
-
+    
     "commands": {
         "_execute_action": {
             "suggested_key": {
@@ -87,9 +87,9 @@
             "description": "Copy all URLs to clipboard"
         }
     },
-
+    
     "options_page": "options.html",
-
+    
     "externally_connectable": {
         "matches": []
     }
