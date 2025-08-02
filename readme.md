@@ -42,6 +42,14 @@ By using this chrome extension we can gather all url that are open on the curren
     "build:firefox": "Build for Firefox (Manifest V2)",
     "build:safari": "Build for Safari (Manifest V2)",
     "build:all": "Build for all browsers",
+    "zip": "Create distribution zips for all browsers",
+    "zip:chrome": "Create Chrome extension zip",
+    "zip:firefox": "Create Firefox extension zip",
+    "zip:safari": "Create Safari extension zip",
+    "package": "Complete build and zip workflow for all browsers",
+    "package:chrome": "Build and zip Chrome extension",
+    "package:firefox": "Build and zip Firefox extension",
+    "package:safari": "Build and zip Safari extension",
     "version:check": "Check version consistency",
     "version:patch": "Bump patch version",
     "version:minor": "Bump minor version",
@@ -49,6 +57,20 @@ By using this chrome extension we can gather all url that are open on the curren
   }
 }
 ```
+
+### Distribution & Publishing
+After building, create store-ready zip files:
+```bash
+# Create zips for all browsers
+npm run package
+
+# Or create for specific browser
+npm run package:chrome
+npm run package:firefox
+npm run package:safari
+```
+
+Zip files are created in the `build/` directory with versioned names (e.g., `chrome-v1.0.0.zip`) ready for upload to browser extension stores.
 
 ### Cross-Browser Development
 This extension supports multiple browsers with optimized manifests:
@@ -92,6 +114,7 @@ You can use this as a boilerplate for other cross-browser extensions. The projec
 - ✅ Cross-browser manifest management
 - ✅ Automated version management
 - ✅ Webpack build system
+- ✅ Distribution zip creation for browser stores
 - ✅ Comprehensive documentation
 - ✅ Release automation scripts
 

@@ -15,6 +15,7 @@ This directory co# Bump minor version (new features)
 | Script | Purpose | Usage |
 |--------|---------|-------|
 | **build-manifest.sh** | Build browser-specific manifests | `./scripts/build-manifest.sh [chrome\|firefox\|safari\|all]` |
+| **zip-extension.js** | Create distribution zips for browser stores | `node scripts/zip-extension.js [chrome\|firefox\|safari\|all]` |
 | **version-bump.sh** | Automated version management | `./scripts/version-bump.sh [major\|minor\|patch] "message"` |
 | **check-version.sh** | Version consistency validation | `./scripts/check-version.sh` |
 | **verify-extension.sh** | Verify extension build completeness | `./scripts/verify-extension.sh` |
@@ -34,6 +35,22 @@ This directory co# Bump minor version (new features)
 
 # All browsers
 ./scripts/build-manifest.sh all
+```
+
+### Creating Distribution Zips
+```bash
+# Create zips for all browsers
+node scripts/zip-extension.js all
+# or use the npm script
+npm run zip
+
+# Create zip for specific browser
+node scripts/zip-extension.js chrome
+npm run zip:chrome
+
+# Complete package workflow (build + zip)
+npm run package        # All browsers
+npm run package:chrome # Chrome only
 ```
 
 ### Version Management
@@ -63,6 +80,40 @@ This directory co# Bump minor version (new features)
 - ✅ Validates target browser parameter
 
 **Output**: Creates `dist/` directory with browser-specific builds.
+
+### zip-extension.js
+**Purpose**: Creates distribution-ready zip files for browser extension stores.
+
+**Features**:
+- ✅ Creates versioned zip files for each browser
+- ✅ Automatically includes version number in filename
+- ✅ Validates browser build exists before zipping
+- ✅ Cross-platform compatibility using Node.js
+- ✅ Displays file sizes and creation summary
+- ✅ Supports individual browser or all-browser zipping
+
+**Output**: Creates `build/` directory with:
+- `chrome-v{version}.zip` - Chrome Web Store
+- `firefox-v{version}.zip` - Firefox Add-ons
+- `safari-v{version}.zip` - Safari Extensions
+
+**Usage Examples**:
+```bash
+# Via npm scripts (recommended)
+npm run zip              # All browsers
+npm run zip:chrome       # Chrome only
+npm run package          # Build + zip all
+npm run package:chrome   # Build + zip Chrome
+
+# Direct script usage
+node scripts/zip-extension.js
+node scripts/zip-extension.js chrome
+node scripts/zip-extension.js --help
+```
+
+**Exit Codes**:
+- `0`: All zips created successfully
+- `1`: Missing builds or zip creation failed
 
 ### version-bump.sh
 **Purpose**: Automated semantic versioning across all project files.
