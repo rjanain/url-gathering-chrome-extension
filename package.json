@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx webpack --watch --config webpack.dev.js",
-    "dev:build": "npx webpack --config webpack.dev.js",
+    "dev:build": "NODE_ENV=development npx webpack --config webpack.config.js",
+    "dev:safe": "./scripts/dev-build.sh",
     "build": "npm run version:check && npx webpack --config webpack.prod.js",
     "build:quick": "npx webpack --config webpack.prod.js",
     "build:analyze": "npx webpack --config webpack.prod.js --analyze",

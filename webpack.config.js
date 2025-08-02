@@ -22,7 +22,9 @@ module.exports = (env = {}) => {
             path: path.resolve(__dirname, 'dist'),
             filename: 'vendor/[name].js',
             clean: true,
-            publicPath: '',
+            publicPath: '/',
+            // Prevent webpack from using document.baseURI in service workers
+            globalObject: 'this'
         },
 
         module: {
@@ -146,7 +148,72 @@ module.exports = (env = {}) => {
 
         optimization: getOptimization(isProduction),
 
-        devtool: isDevelopment ? 'eval-source-map' : 'source-map',
+        devtool: isDevelopment ? 'cheap-module-source-map' : 'source-map',
+
+        // Configure different source map settings for content scripts
+        plugins: [
+            getDefinePlugin(currentEnv),
+
+            new HtmlWebpackPlugin({
+                template: './public/popup.html',
+                filename: 'popup.html',
+                chunks: ['popup']
+            }),
+
+            new HtmlWebpackPlugin({
+                template: './public/options.html',
+                filename: 'options.html',
+                chunks: []
+            }),
+
+            new CopyPlugin({
+                patterns: [
+                    { from: 'public/manifest-active.json', to: 'manifest-active.json' },
+                    { from: 'public/manifest-firefox.json', to: 'manifest-firefox.json' },
+                    { from: 'public/manifest-safari.json', to: 'manifest-safari.json' },
+                    { from: 'public/assets', to: 'assets' }
+                ]
+            }),
+
+            new MiniCssExtractPlugin({
+                filename: 'assets/css/[name].css'
+            }),
+
+            // Custom plugin to disable source maps for content scripts in development
+            ...(isDevelopment ? [{
+                apply: (compiler) => {
+                    compiler.hooks.afterEmit.tap('DisableContentScriptSourceMaps', (compilation) => {
+                        const fs = require('fs');
+                        const contentScriptPath = path.join(compiler.options.output.path, 'vendor/contentScript.js');
+                        const contentScriptMapPath = contentScriptPath + '.map';
+
+                        // Remove source map reference from content script
+                        if (fs.existsSync(contentScriptPath)) {
+                            let content = fs.readFileSync(contentScriptPath, 'utf8');
+                            content = content.replace(/\/\/# sourceMappingURL=.*$/m, '');
+                            fs.writeFileSync(contentScriptPath, content);
+                        }
+
+                        // Remove the source map file for content script
+                        if (fs.existsSync(contentScriptMapPath)) {
+                            fs.unlinkSync(contentScriptMapPath);
+                        }
+
+                        // Fix service worker document.baseURI issue
+                        const serviceWorkerPath = path.join(compiler.options.output.path, 'vendor/serviceWorker.js');
+                        if (fs.existsSync(serviceWorkerPath)) {
+                            let content = fs.readFileSync(serviceWorkerPath, 'utf8');
+                            // Replace document.baseURI with self.location.href for service worker compatibility
+                            content = content.replace(
+                                /document\.baseURI \|\| self\.location\.href/g,
+                                'self.location.href'
+                            );
+                            fs.writeFileSync(serviceWorkerPath, content);
+                        }
+                    });
+                }
+            }] : [])
+        ],
 
         stats: {
             colors: true,

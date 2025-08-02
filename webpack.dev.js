@@ -1,9 +1,12 @@
 const { merge } = require('webpack-merge');
 const config = require('./webpack.config.js');
 
-module.exports = merge(config({ NODE_ENV: 'development' }), {
+module.exports = (env = {}) => {
+    const baseConfig = config({ NODE_ENV: 'development', ...env });
+
+    return merge(baseConfig, {
     mode: 'development',
-    devtool: 'eval-source-map',
+    devtool: 'cheap-module-source-map',
 
     // Watch options for development
     watchOptions: {
@@ -31,4 +34,5 @@ module.exports = merge(config({ NODE_ENV: 'development' }), {
         minimize: false,
         splitChunks: false
     }
-});
+    });
+};
