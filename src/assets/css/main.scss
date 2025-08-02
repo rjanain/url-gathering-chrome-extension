@@ -46,7 +46,6 @@ body {
 
 // Extension specific styles
 .extension-popup {
-  width: 400px;
   max-height: 600px;
   overflow-y: auto;
 }
@@ -122,14 +121,6 @@ body {
   }
   to {
     transform: translateX(0);
-  }
-}
-
-// Responsive design for different screen sizes
-@media (max-width: 480px) {
-  .extension-popup {
-    width: 100vw;
-    max-width: 400px;
   }
 }
 
