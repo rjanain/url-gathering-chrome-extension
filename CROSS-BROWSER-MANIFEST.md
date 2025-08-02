@@ -7,6 +7,33 @@ This project supports multiple browsers with optimized manifest files for each p
 - **Firefox**: Manifest V2 (`manifest-firefox.json`)
 - **Safari**: Manifest V2 (`manifest-safari.json`)
 
+## Cross-Browser API Compatibility
+
+### WebExtension Polyfill
+This extension uses the `webextension-polyfill` package to ensure cross-browser compatibility:
+
+- **Package**: `webextension-polyfill`
+- **Purpose**: Provides the `browser.*` API across all browsers
+- **Fallback**: Automatically falls back to `chrome.*` API when polyfill is not available
+- **Implementation**: Global polyfill loaded in HTML files, with dynamic fallback in JS modules
+
+### API Usage Pattern
+All extension code uses this pattern for maximum compatibility:
+```javascript
+// Use the browser global or fallback to chrome
+const api = (typeof browser !== 'undefined') ? browser : chrome;
+
+// Then use api.* instead of chrome.* or browser.*
+await api.tabs.query(queryOptions);
+api.storage.sync.set(data);
+api.runtime.onInstalled.addListener(callback);
+```
+
+### Browser-Specific API Support
+- **Chrome/Edge**: Native `chrome.*` API with automatic promise conversion via polyfill
+- **Firefox**: Native `browser.*` API, enhanced by polyfill for consistency
+- **Safari**: `chrome.*` API enhanced by polyfill for `browser.*` compatibility
+
 ## Key Differences Between Browsers
 
 ### Chrome/Edge (Manifest V3)
