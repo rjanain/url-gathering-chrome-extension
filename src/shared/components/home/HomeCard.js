@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Badge from 'react-bootstrap/Badge';
 import { Stack } from "react-bootstrap";
-import { getTabs } from "../api/chromeAPI"
-import { getLink } from "../api/copyAPI";
+import { getTabs, getLink } from "../../../utils";
 import CopyAllButton from "./icon/CopyAllButton";
 import CreateIcon from "./icon/Icon"
 
@@ -46,7 +45,7 @@ export const HomeCard = (props) => {
     setCopyRequest({
       [e.target.id]: true
     })
-    
+
     setTimeout(() => {
       // Removed copied badge after few seconds
       setCopyRequest({
@@ -123,7 +122,7 @@ export const HomeCard = (props) => {
 
 
         {
-          copyRequest["copyHighlighted"] || copyRequest["copyAll"] 
+          copyRequest["copyHighlighted"] || copyRequest["copyAll"]
           ? (
             <div className="mt-1">
               <Badge bg="success" pill>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
-import { saveToChromeStorage } from "../../api/handlerStorage"
+import { saveToChromeStorage } from "../../../../utils"
 import ShowAlert from "./ShowAlert"
 import ShowToast from "./ShowToast"
 
