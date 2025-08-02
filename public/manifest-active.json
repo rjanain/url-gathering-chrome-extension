@@ -88,8 +88,6 @@
         }
     },
 
-    "options_page": "options.html",
-
     "externally_connectable": {
         "matches": []
     }
