@@ -1,6 +1,8 @@
 
-// Use the browser global or fallback to chrome
-const api = (typeof browser !== 'undefined') ? browser : chrome;
+import { Browser } from './browser.js';
+
+// Use the browser API abstraction
+const api = Browser.api.getAPI();
 
 /**
  * Get id, windowId, name and url of each tab in the current window
@@ -49,13 +51,8 @@ const processTabData = (tabs) => {
             (acc, cur) => Object.assign(acc, { [cur.url]: cur }), {}
         ))
 
-    /* Remove chrome's pages */
-    const filteredData = uniqueData.filter((el) => {
-        const regularExp = new RegExp('^(http://|https://|ssh://|ftp://)')
-        return (
-            el.url.match(regularExp) ? true : false
-        )
-    })
+    /* Remove browser-specific internal pages using the browser abstraction */
+    const filteredData = Browser.quirks.filterInternalUrls(uniqueData);
 
 
     // console.log('filtered', filteredData)

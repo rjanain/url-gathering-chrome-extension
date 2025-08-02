@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Badge from 'react-bootstrap/Badge';
 import { Stack } from "react-bootstrap";
-import { getTabs, getLink } from "../../../utils";
+import { getTabs, getLink, Browser } from "../../../utils";
 import CopyAllButton from "./icon/CopyAllButton";
 import CreateIcon from "./icon/Icon"
 
@@ -40,7 +40,14 @@ export const HomeCard = (props) => {
     }
 
 
-    await navigator.clipboard.writeText(await getLink(e.target.id, filteredTabs))
+    // Use browser-specific clipboard handling
+    const linkText = await getLink(e.target.id, filteredTabs);
+    const copySuccess = await Browser.quirks.copyToClipboard(linkText);
+
+    if (!copySuccess) {
+      console.error('Failed to copy to clipboard');
+      return;
+    }
 
     setCopyRequest({
       [e.target.id]: true
