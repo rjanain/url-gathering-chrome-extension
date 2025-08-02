@@ -86,9 +86,5 @@
             },
             "description": "Copy all URLs to clipboard"
         }
-    },
-
-    "externally_connectable": {
-        "matches": []
     }
 }
