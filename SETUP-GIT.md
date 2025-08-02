@@ -72,7 +72,7 @@ git add .
 ## What This Setup Prevents
 
 1. **Line ending issues**: Different line endings (CRLF vs LF) showing as changes
-2. **File permission changes**: Unnecessary permission changes between platforms  
+2. **File permission changes**: Unnecessary permission changes between platforms
 3. **Binary file corruption**: Prevents git from trying to convert binary files
 4. **False diffs**: Eliminates whitespace-only changes in diffs
 
