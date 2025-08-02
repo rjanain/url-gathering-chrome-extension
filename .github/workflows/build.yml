@@ -29,6 +29,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Fix Script Permissions
+        run: chmod +x *.sh scripts/*.sh
+
       - name: Check Version Consistency
         run: npm run version:check
 
@@ -92,6 +95,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Fix Script Permissions
+        run: chmod +x *.sh scripts/*.sh
+
       - name: Build Extension for Testing
         run: npm run build:all
 
@@ -120,6 +126,9 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
+
+      - name: Fix Script Permissions
+        run: chmod +x *.sh scripts/*.sh
 
       - name: Build and Package for Release
         run: npm run package
