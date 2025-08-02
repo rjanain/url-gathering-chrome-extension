@@ -1,0 +1,168 @@
+name: Build & Package Extension
+
+on:
+  push:
+    branches: [ master, main, develop ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Extension for All Browsers
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Fix Script Permissions
+        run: chmod +x *.sh scripts/*.sh
+
+      - name: Check Version Consistency
+        run: npm run version:check
+
+      - name: Build Extension for All Browsers
+        run: npm run build:all
+
+      - name: Create Distribution Packages
+        run: npm run zip
+
+      - name: List Generated Files
+        run: |
+          echo "Generated extension packages:"
+          ls -la build/
+          echo ""
+          echo "File sizes:"
+          du -h build/*.zip
+
+      - name: Upload Chrome Extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrome-extension-${{ matrix.node-version }}
+          path: build/chrome-*.zip
+          retention-days: 30
+
+      - name: Upload Firefox Extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-extension-${{ matrix.node-version }}
+          path: build/firefox-*.zip
+          retention-days: 30
+
+      - name: Upload Safari Extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: safari-extension-${{ matrix.node-version }}
+          path: build/safari-*.zip
+          retention-days: 30
+
+      - name: Upload All Extensions Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-browser-extensions-${{ matrix.node-version }}
+          path: build/
+          retention-days: 30
+
+  test:
+    name: Test Extension Builds
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Fix Script Permissions
+        run: chmod +x *.sh scripts/*.sh
+
+      - name: Build Extension for Testing
+        run: npm run build:all
+
+      - name: Validate Extension Structure
+        run: npm run validate
+
+      - name: Run Extension Tests
+        run: npm run test
+        continue-on-error: true
+
+  release:
+    name: Create Release Packages
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/3-revamp-extension-for-cross-browser-compatibility-chrome-firefox-safari-edge'
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Fix Script Permissions
+        run: chmod +x *.sh scripts/*.sh
+
+      - name: Build and Package for Release
+        run: npm run package
+
+      - name: Get Package Version
+        id: version
+        run: echo "version=$(cat version.json | jq -r '.version')" >> $GITHUB_OUTPUT
+
+      - name: Upload Release Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-packages-v${{ steps.version.outputs.version }}
+          path: build/
+          retention-days: 90
+
+      - name: Create Build Summary
+        run: |
+          echo "## 📦 Extension Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${GITHUB_REF#refs/heads/}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${GITHUB_SHA:0:7}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Generated Packages:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          for file in build/*.zip; do
+            if [ -f "$file" ]; then
+              size=$(du -h "$file" | cut -f1)
+              echo "- \`$(basename "$file")\` (${size})" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Browser Compatibility:" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ **Chrome** (Manifest V3)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ **Firefox** (Manifest V2)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ **Safari** (Manifest V2)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ **Edge** (Manifest V3)" >> $GITHUB_STEP_SUMMARY

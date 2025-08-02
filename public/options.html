@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<he                        <div class="mt-3">
+                            <button type="button" class="btn btn-primary" onclick="(typeof browser !== 'undefined' ? browser : chrome).tabs.create({url: (typeof browser !== 'undefined' ? browser : chrome).runtime.getURL('popup.html')})">
+                                Open Extension Popup
+                            </button>
+                        </div>   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Gathering Tool - Options</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/quartz/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">
+                    <img src="assets/img/32.png" alt="URL Gathering Tool" class="me-2">
+                    URL Gathering Tool - Options
+                </h1>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Extension Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <strong>Coming Soon!</strong> Options page is under development.
+                            <br>Currently, you can access settings through the extension popup.
+                        </div>
+
+                        <h6>Available Features:</h6>
+                        <ul>
+                            <li>Multiple export formats (Markdown, CSV, HTML, JSON, Plain Text)</li>
+                            <li>Copy individual URLs or all tabs</li>
+                            <li>Include/exclude page titles</li>
+                            <li>Keyboard shortcuts support</li>
+                        </ul>
+
+                        <div class="mt-3">
+                            <button type="button" class="btn btn-primary" onclick="browser.tabs.create({url: browser.runtime.getURL('popup.html')})">
+                                Open Extension Popup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-muted">
+                    <small>
+                        Version 1.0.0 |
+                        <a href="https://github.com/rjanain/url-gathering-chrome-extension" target="_blank">GitHub Repository</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/browser-polyfill.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
