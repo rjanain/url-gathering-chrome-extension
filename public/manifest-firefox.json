@@ -1,81 +1,78 @@
 {
-    "name": "URL Gathering Tool",
-    "description": "A cross-browser extension that gathers all URLs currently open in browser, allowing them to be easily copied in multiple formats (Markdown, CSV, HTML, JSON, plain text).",
-    "version": "1.0.0",
-    "manifest_version": 2,
-
-    "author": "Dr. Rakesh Jana",
-    "homepage_url": "https://rjana.in",
-
-    "background": {
-        "scripts": ["vendor/serviceWorker.js"],
-        "persistent": false
-    },
-
-    "permissions": [
-        "tabs",
-        "storage",
-        "activeTab",
+  "name": "LinkPilot",
+  "description": "Easily copy all browser URLs in multiple formats: Markdown, CSV, HTML, JSON, and plain text. Perfect for research!",
+  "version": "1.1.0",
+  "manifest_version": 2,
+  "author": "Dr. Rakesh Jana",
+  "homepage_url": "https://rjana.in",
+  "background": {
+    "scripts": [
+      "vendor/serviceWorker.js"
+    ],
+    "persistent": false
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "activeTab",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "icons": {
+    "16": "assets/img/16.png",
+    "32": "assets/img/32.png",
+    "48": "assets/img/32.png",
+    "128": "assets/img/180.png"
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_title": "LinkPilot",
+    "default_icon": {
+      "16": "assets/img/16.png",
+      "32": "assets/img/32.png",
+      "48": "assets/img/32.png",
+      "128": "assets/img/180.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
         "http://*/*",
         "https://*/*"
-    ],
-
-    "icons": {
-        "16": "assets/img/16.png",
-        "32": "assets/img/32.png",
-        "48": "assets/img/32.png",
-        "128": "assets/img/180.png"
-    },
-
-    "browser_action": {
-        "default_popup": "popup.html",
-        "default_title": "URL Gathering Tool",
-        "default_icon": {
-            "16": "assets/img/16.png",
-            "32": "assets/img/32.png",
-            "48": "assets/img/32.png",
-            "128": "assets/img/180.png"
-        }
-    },
-
-    "content_scripts": [
-        {
-            "matches": ["http://*/*", "https://*/*"],
-            "js": ["vendor/contentScript.js"],
-            "run_at": "document_idle",
-            "all_frames": false
-        }
-    ],
-
-    "web_accessible_resources": [
-        "assets/img/*.png",
-        "assets/css/*.css",
-        "assets/js/*.js"
-    ],
-
-    "content_security_policy": "script-src 'self'; object-src 'self';",
-
-    "commands": {
-        "_execute_browser_action": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+U",
-                "mac": "Command+Shift+U"
-            },
-            "description": "Open URL Gathering Tool"
-        },
-        "copy_all_urls": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+C",
-                "mac": "Command+Shift+C"
-            },
-            "description": "Copy all URLs to clipboard"
-        }
-    },
-
-    "applications": {
-        "gecko": {
-            "id": "url-gathering-tool@rjana.in",
-            "strict_min_version": "78.0"
-        }
+      ],
+      "js": [
+        "vendor/contentScript.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
     }
+  ],
+  "web_accessible_resources": [
+    "assets/img/*.png",
+    "assets/css/*.css",
+    "assets/js/*.js"
+  ],
+  "content_security_policy": "script-src 'self'; object-src 'self';",
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U",
+        "mac": "Command+Shift+U"
+      },
+      "description": "Open LinkPilot"
+    },
+    "copy_all_urls": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+C",
+        "mac": "Command+Shift+C"
+      },
+      "description": "Copy all URLs to clipboard"
+    }
+  },
+  "applications": {
+    "gecko": {
+      "id": "url-gathering-tool@rjana.in",
+      "strict_min_version": "78.0"
+    }
+  }
 }

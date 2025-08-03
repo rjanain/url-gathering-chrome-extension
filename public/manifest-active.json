@@ -1,6 +1,6 @@
 {
-    "name": "URL Gathering Tool",
-    "description": "An extension that gathers all URLs currently open in browser, allowing them to be easily copied in multiple formats (Markdown, CSV, HTML, JSON, plain text).",
+    "name": "LinkPilot",
+    "description": "Easily copy all browser URLs in multiple formats: Markdown, CSV, HTML, JSON, and plain text. Perfect for research!",
     "version": "1.0.0",
     "manifest_version": 3,
     "offline_enabled": true,
@@ -36,7 +36,7 @@
 
     "action": {
         "default_popup": "popup.html",
-        "default_title": "URL Gathering Tool",
+        "default_title": "LinkPilot",
         "default_icon": {
             "16": "assets/img/16.png",
             "32": "assets/img/32.png",
@@ -77,7 +77,7 @@
                 "default": "Ctrl+Shift+U",
                 "mac": "Command+Shift+U"
             },
-            "description": "Open URL Gathering Tool"
+            "description": "Open LinkPilot"
         },
         "copy_all_urls": {
             "suggested_key": {

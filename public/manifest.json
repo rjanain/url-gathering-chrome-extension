@@ -1,91 +1,88 @@
 {
-    "name": "LinkPilot",
-    "description": "An extension that gathers all URLs currently open in browser, allowing them to be easily copied in multiple formats (Markdown, CSV, HTML, JSON, plain text).",
-    "version": "1.0.0",
-    "manifest_version": 3,
-    "offline_enabled": true,
-
-    "author": "Dr. Rakesh Jana",
-    "homepage_url": "https://rjana.in",
-
-    "background": {
-        "service_worker": "vendor/serviceWorker.js",
-        "type": "module"
-    },
-
-    "permissions": [
-        "tabs",
-        "storage",
-        "activeTab"
-    ],
-
-    "host_permissions": [
+  "name": "LinkPilot",
+  "description": "Easily copy all browser URLs in multiple formats: Markdown, CSV, HTML, JSON, and plain text. Perfect for research!",
+  "version": "1.1.0",
+  "manifest_version": 3,
+  "offline_enabled": true,
+  "author": "Dr. Rakesh Jana",
+  "homepage_url": "https://rjana.in",
+  "background": {
+    "service_worker": "vendor/serviceWorker.js",
+    "type": "module"
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "icons": {
+    "16": "assets/img/16.png",
+    "32": "assets/img/32.png",
+    "48": "assets/img/32.png",
+    "128": "assets/img/180.png",
+    "180": "assets/img/180.png",
+    "192": "assets/img/192.png",
+    "512": "assets/img/512.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LinkPilot",
+    "default_icon": {
+      "16": "assets/img/16.png",
+      "32": "assets/img/32.png",
+      "48": "assets/img/32.png",
+      "128": "assets/img/180.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
         "http://*/*",
         "https://*/*"
-    ],
-
-    "icons": {
-        "16": "assets/img/16.png",
-        "32": "assets/img/32.png",
-        "48": "assets/img/32.png",
-        "128": "assets/img/180.png",
-        "180": "assets/img/180.png",
-        "192": "assets/img/192.png",
-        "512": "assets/img/512.png"
-    },
-
-    "action": {
-        "default_popup": "popup.html",
-        "default_title": "LinkPilot",
-        "default_icon": {
-            "16": "assets/img/16.png",
-            "32": "assets/img/32.png",
-            "48": "assets/img/32.png",
-            "128": "assets/img/180.png"
-        }
-    },
-
-    "content_scripts": [
-        {
-            "matches": ["http://*/*", "https://*/*"],
-            "js": ["vendor/contentScript.js"],
-            "run_at": "document_idle",
-            "all_frames": false
-        }
-    ],
-
-    "web_accessible_resources": [
-        {
-            "resources": [
-                "assets/img/*.png",
-                "assets/css/*.css",
-                "assets/js/*.js",
-                "vendor/*.css"
-            ],
-            "matches": ["http://*/*", "https://*/*"]
-        }
-    ],
-
-    "minimum_chrome_version": "88",
-
-    "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'; frame-ancestors 'none';"
-    },
-
-    "commands": {
-        "_execute_action": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+U",
-                "mac": "Command+Shift+U"
-            },
-            "description": "Open LinkPilot"
-        },
-        "copy_all_urls": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+C",
-                "mac": "Command+Shift+C"
-            },
-            "description": "Copy all URLs to clipboard"
-        }
+      ],
+      "js": [
+        "vendor/contentScript.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
     }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/img/*.png",
+        "assets/css/*.css",
+        "assets/js/*.js",
+        "vendor/*.css"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ]
+    }
+  ],
+  "minimum_chrome_version": "88",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; frame-ancestors 'none';"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U",
+        "mac": "Command+Shift+U"
+      },
+      "description": "Open LinkPilot"
+    },
+    "copy_all_urls": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+C",
+        "mac": "Command+Shift+C"
+      },
+      "description": "Copy all URLs to clipboard"
+    }
+  }
 }

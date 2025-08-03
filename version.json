@@ -1,15 +1,20 @@
 {
-  "version": "1.0.0",
-  "name": "URL Gathering Tool",
-  "description": "Cross-browser extension with enhanced features",
-  "previousVersion": "0.0.4",
-  "releaseDate": "2025-08-02",
-  "releaseType": "major",
+  "version": "1.1.0",
+  "name": "LinkPilot",
+  "description": "Modern URL gathering extension with Tailwind CSS UI and cross-browser compatibility",
+  "previousVersion": "1.0.0",
+  "releaseDate": "2025-08-03",
+  "releaseType": "minor",
   "changes": {
     "major": [
+      "Complete UI migration from Bootstrap 5 to Tailwind CSS + shadcn/ui",
+      "TypeScript implementation for better type safety",
       "Cross-browser compatibility (Chrome, Firefox, Safari, Edge)",
       "Manifest V3 implementation for Chrome/Edge",
-      "Complete project restructure for maintainability"
+      "Complete project restructure for maintainability",
+      "Rebranded to LinkPilot with optimized Chrome Web Store description",
+      "Fixed event handling issues with React synthetic events",
+      "Added defensive programming for improved error handling"
     ],
     "minor": [],
     "patch": []
