@@ -170,7 +170,13 @@ jobs:
           echo "" >> release-assets/RELEASE_MANIFEST.md
           echo "## Build Information" >> release-assets/RELEASE_MANIFEST.md
           echo "- **Version:** ${{ steps.version.outputs.version }}" >> release-assets/RELEASE_MANIFEST.md
-          echo "- **Branch:** ${GITHUB_REF#refs/heads/}" >> release-assets/RELEASE_MANIFEST.md
+          if [ "$GITHUB_REF_TYPE" = "branch" ]; then
+            echo "- **Branch:** ${GITHUB_REF_NAME}" >> release-assets/RELEASE_MANIFEST.md
+          elif [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            echo "- **Tag:** ${GITHUB_REF_NAME}" >> release-assets/RELEASE_MANIFEST.md
+          else
+            echo "- **Ref:** ${GITHUB_REF_NAME}" >> release-assets/RELEASE_MANIFEST.md
+          fi
           echo "- **Commit:** ${GITHUB_SHA}" >> release-assets/RELEASE_MANIFEST.md
           echo "- **Build Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> release-assets/RELEASE_MANIFEST.md
           echo "" >> release-assets/RELEASE_MANIFEST.md
