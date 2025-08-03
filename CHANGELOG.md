@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning].
 - Consistent LinkPilot branding across all manifest files
 - Chrome Web Store compliant description (under 120 characters)
 
-### Fixed  
+### Fixed
 - Event handling issues with React synthetic events in setTimeout callbacks
 - "Cannot read properties of null (reading 'id')" error in copy functionality
 - Type safety issues with event handlers for both button and image elements
