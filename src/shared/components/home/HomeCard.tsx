@@ -89,17 +89,17 @@ export const HomeCard = () => {
 
       <div className="flex flex-wrap gap-2 justify-between mb-4">
         {tabs
-          ? tabs.map((el, index) => {
+          ? tabs.map((el) => {
               return (
                 <CreateIcon
                   onClick={handleListClickEvent}
-                  key={index}
-                  index={index}
+                  key={el.id}
+                  tabId={el.id}
                   title={el?.title}
                   url={el?.url}
                   favIconUrl={el?.favIconUrl}
                   active={el?.active}
-                  isCopied={copyRequest[index]}
+                  isCopied={copyRequest[el.id]}
                 />
               )
             })

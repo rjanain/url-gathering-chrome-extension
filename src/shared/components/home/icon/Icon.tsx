@@ -4,8 +4,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../../../../components/
 
 interface CreateIconProps {
   onClick: (e: React.MouseEvent<HTMLImageElement | HTMLButtonElement>) => void
-  id: string | number
-  index: number
+  tabId: number
   title: string
   url: string
   favIconUrl?: string
@@ -15,8 +14,7 @@ interface CreateIconProps {
 
 function CreateIcon({
   onClick,
-  id,
-  index,
+  tabId,
   title,
   url,
   favIconUrl,
@@ -29,7 +27,7 @@ function CreateIcon({
         <TooltipTrigger asChild>
           <img
             onClick={onClick}
-            id={id.toString()}
+            id={tabId.toString()}
             height={active ? 60 : 40}
             width={active ? 60 : 40}
             src={favIconUrl || "/assets/img/favicon.ico"}
