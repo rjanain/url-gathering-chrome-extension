@@ -1,4 +1,4 @@
-# URL Gathering Tool - Chrome Extension (<img src="./public/assets/img/180.png" height=16 alt="Chrome Extension " />)
+# URL Gathering Tool - Chrome Extension (<img src="./public/assets/img/128.png" height=16 alt="Chrome Extension " />)
 
 [![Keep a Changelog v1.1.0 badge][changelog-badge]][changelog]
 [![Version 1.1.0 Badge][version-badge]][changelog]

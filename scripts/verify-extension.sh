@@ -38,7 +38,7 @@ if [ -d "$CHROME_DIR/assets" ]; then
     echo "✅ assets/ directory"
 
     # Check for icon files
-    icon_files=("assets/img/16.png" "assets/img/32.png" "assets/img/180.png")
+    icon_files=("assets/img/16.png" "assets/img/32.png" "assets/img/128.png")
     for icon in "${icon_files[@]}"; do
         if [ -f "$CHROME_DIR/$icon" ]; then
             echo "✅ $icon"

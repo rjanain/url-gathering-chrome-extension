@@ -22,9 +22,8 @@
   "icons": {
     "16": "assets/img/16.png",
     "32": "assets/img/32.png",
-    "48": "assets/img/32.png",
-    "128": "assets/img/180.png",
-    "180": "assets/img/180.png",
+    "48": "assets/img/48.png",
+    "128": "assets/img/128.png",
     "192": "assets/img/192.png",
     "512": "assets/img/512.png"
   },
