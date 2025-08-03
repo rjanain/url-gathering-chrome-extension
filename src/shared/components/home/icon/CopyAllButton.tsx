@@ -1,6 +1,6 @@
 import React from "react"
 import { Button } from "../../../../components/ui/button"
-import { Check } from "lucide-react"
+import { CheckIcon } from "@heroicons/react/24/solid"
 
 interface CopyAllButtonProps {
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
@@ -26,7 +26,7 @@ const CopyAllButton: React.FC<CopyAllButtonProps> = ({
       className="flex items-center gap-2"
     >
       {isCopied && (
-        <Check className="h-4 w-4" />
+        <CheckIcon className="h-4 w-4" />
       )}
       {text}
     </Button>
