@@ -7,29 +7,41 @@ module.exports = {
     entry: {
         serviceWorker: './src/background/serviceWorker.js',
         contentScript: './src/content/contentScript.js',
-        popup: './src/popup/index.js'
+        popup: './src/popup/index.tsx'
     },
     output: {
         path: path.resolve(__dirname, 'dist/vendor'),
         filename: '[name].js',
 		clean: true,
     },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    },
     module: {
-        rules: [{
-            test: /\.(js|jsx)$/,
-            exclude: /node_modules/,
-            use: {
-                loader: 'babel-loader',
-                options: {
-                    presets: [
-                        '@babel/preset-env',
-                        '@babel/preset-react'
-                    ],
+        rules: [
+            {
+                test: /\.(js|jsx|ts|tsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                            '@babel/preset-react',
+                            '@babel/preset-typescript'
+                        ],
+                    }
                 }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'postcss-loader',
+                ],
             }
-        }
-
-    ],
+        ],
     },
     plugins: [
     new CopyPlugin({

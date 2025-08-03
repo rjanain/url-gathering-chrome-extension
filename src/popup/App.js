@@ -1,32 +1,19 @@
 import React from 'react'
-
-
+import { TooltipProvider } from '../components/ui/tooltip'
 import { Header, HomeTab, OptionTab } from '../shared/components/Home'
 
-
-
 function App() {
-
-
   return (
-    <>
-      <div className="container text-center">
-        <div className="row">
-          <div className="col-md-12">
-            <div id="myTabContent" className="tab-content">
-              <Header />
-
-              <HomeTab />
-
-              <OptionTab />
-
-            </div>
-          </div>
+    <TooltipProvider>
+      <div className="w-full max-w-sm mx-auto p-4 bg-background text-foreground">
+        <div className="space-y-4">
+          <Header />
+          <HomeTab />
+          <OptionTab />
         </div>
       </div>
-    </>
+    </TooltipProvider>
   )
 }
-
 
 export default App
