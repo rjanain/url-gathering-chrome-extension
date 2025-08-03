@@ -12,7 +12,7 @@ export interface Tab {
 // Chrome API functions
 export declare function getTabs(): Promise<Tab[]>;
 
-// Copy API functions  
+// Copy API functions
 export declare function getLink(id: string, tabs: Tab[]): Promise<string>;
 
 // Storage functions
