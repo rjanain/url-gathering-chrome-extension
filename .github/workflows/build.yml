@@ -143,11 +143,61 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Download All Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: '*-extension-20.x'
+          path: artifacts/
+          merge-multiple: true
+
+      - name: Prepare Release Assets
+        run: |
+          # Create release-assets directory
+          mkdir -p release-assets
+
+          # Copy all zipped extensions
+          if [ -d "build" ]; then
+            cp -r build/*.zip release-assets/ 2>/dev/null || true
+          fi
+
+          # Copy downloaded artifacts (these are the runtime build artifacts)
+          if [ -d "artifacts" ]; then
+            find artifacts/ -name "*.zip" -exec cp {} release-assets/ \;
+          fi
+
+          # Create a comprehensive manifest file
+          echo "# Release Manifest v${{ steps.version.outputs.version }}" > release-assets/RELEASE_MANIFEST.md
+          echo "" >> release-assets/RELEASE_MANIFEST.md
+          echo "## Build Information" >> release-assets/RELEASE_MANIFEST.md
+          echo "- **Version:** ${{ steps.version.outputs.version }}" >> release-assets/RELEASE_MANIFEST.md
+          if [ "$GITHUB_REF_TYPE" = "branch" ]; then
+            echo "- **Branch:** ${GITHUB_REF_NAME}" >> release-assets/RELEASE_MANIFEST.md
+          elif [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            echo "- **Tag:** ${GITHUB_REF_NAME}" >> release-assets/RELEASE_MANIFEST.md
+          else
+            echo "- **Ref:** ${GITHUB_REF_NAME}" >> release-assets/RELEASE_MANIFEST.md
+          fi
+          echo "- **Commit:** ${GITHUB_SHA}" >> release-assets/RELEASE_MANIFEST.md
+          echo "- **Build Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> release-assets/RELEASE_MANIFEST.md
+          echo "" >> release-assets/RELEASE_MANIFEST.md
+          echo "## Included Artifacts" >> release-assets/RELEASE_MANIFEST.md
+          echo "" >> release-assets/RELEASE_MANIFEST.md
+          for file in release-assets/*; do
+            if [ -f "$file" ] && [ "$(basename "$file")" != "RELEASE_MANIFEST.md" ]; then
+              size=$(du -h "$file" | cut -f1)
+              echo "- \`$(basename "$file")\` (${size})" >> release-assets/RELEASE_MANIFEST.md
+            fi
+          done
+
+          # List what we have
+          echo "=== Release Assets ==="
+          ls -la release-assets/
+
       - name: Upload Release Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: release-packages-v${{ steps.version.outputs.version }}
-          path: build/
+          path: release-assets/
           retention-days: 90
 
       - name: Create GitHub Release
@@ -159,7 +209,7 @@ jobs:
           draft: true
           prerelease: false
           generate_release_notes: false
-          files: build/*.zip
+          files: release-assets/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -171,9 +221,9 @@ jobs:
           echo "**Branch:** ${GITHUB_REF#refs/heads/}" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** ${GITHUB_SHA:0:7}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Generated Packages:" >> $GITHUB_STEP_SUMMARY
+          echo "### Release Assets:" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          for file in build/*.zip; do
+          for file in release-assets/*; do
             if [ -f "$file" ]; then
               size=$(du -h "$file" | cut -f1)
               echo "- \`$(basename "$file")\` (${size})" >> $GITHUB_STEP_SUMMARY
@@ -185,3 +235,8 @@ jobs:
           echo "- ✅ **Firefox** (Manifest V2)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ **Safari** (Manifest V2)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ **Edge** (Manifest V3)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Artifacts Included:" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔧 Runtime build artifacts from CI/CD pipeline" >> $GITHUB_STEP_SUMMARY
+          echo "- 📁 Browser-specific extension packages" >> $GITHUB_STEP_SUMMARY
+          echo "- 📋 Release manifest with build details" >> $GITHUB_STEP_SUMMARY
