@@ -16,9 +16,10 @@ MAJOR.MINOR.PATCH
 - **MINOR**: New functionality in a backwards compatible manner
 - **PATCH**: Backwards compatible bug fixes
 
-## Current Version: 1.0.0
+## Current Version: 1.1.0
 
 ### Version History
+- **1.1.0** (2025-08-03): UI migration to Tailwind CSS + shadcn/ui, TypeScript implementation, bug fixes
 - **1.0.0** (2025-08-02): Cross-browser compatibility release
 - **0.0.4** (2022-10-01): Bug fixes and highlighted tab selection
 - **0.0.3** (2022-10-01): Added output format options

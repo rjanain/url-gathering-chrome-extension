@@ -9,8 +9,24 @@ and this project adheres to [Semantic Versioning].
 
 ## [1.1.0] - 2025-08-03
 
+### Added
+- Complete UI migration from Bootstrap 5 to Tailwind CSS + shadcn/ui components
+- TypeScript implementation for better type safety and development experience
+- Defensive programming and improved error handling for React synthetic events
+- Modern shadcn/ui components: Button, Card, Badge, Switch, Input, Label, Tooltip
+- Consistent LinkPilot branding across all manifest files
+- Chrome Web Store compliant description (under 120 characters)
+
+### Fixed  
+- Event handling issues with React synthetic events in setTimeout callbacks
+- "Cannot read properties of null (reading 'id')" error in copy functionality
+- Type safety issues with event handlers for both button and image elements
+
 ### Changed
-- Version bump
+- Rebranded from "URL Gathering Tool" to "LinkPilot"
+- Updated all manifest files with consistent naming and optimized descriptions
+- Improved code structure with TypeScript interfaces and proper type definitions
+- Enhanced accessibility with Radix UI primitives
 
 
 ## [1.0.0] - 2025-08-02
