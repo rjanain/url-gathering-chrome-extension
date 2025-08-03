@@ -15,15 +15,17 @@ function ShowToast({ notifications, show, setShow }: ShowToastProps) {
   const field = notifications.changed;
   const value = notifications[field || ''];
 
-  if (!show) return null;
-
   React.useEffect(() => {
+    if (!show) return;
+
     const timer = setTimeout(() => {
       setShow(false);
     }, 3000);
 
     return () => clearTimeout(timer);
   }, [show, setShow]);
+
+  if (!show) return null;
 
   return (
     <div className="fixed top-4 right-4 z-50 bg-primary text-primary-foreground p-4 rounded-lg shadow-lg transition-all duration-300">
