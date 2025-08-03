@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { Switch } from "../../../../components/ui/switch"
 import { Label } from "../../../../components/ui/label"
-import { saveToChromeStorage } from "../../../../utils"
+// @ts-ignore - JavaScript utility imports
+import { saveToChromeStorage } from "../../../../utils/handlerStorage.js"
 import ShowToast from "./ShowToast"
 
 // Use webextension-polyfill for cross-browser compatibility

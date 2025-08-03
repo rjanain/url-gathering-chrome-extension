@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { Badge } from "../../../components/ui/badge"
-import { getTabs, getLink, Browser } from "../../../utils"
+// @ts-ignore - JavaScript utility imports
+import { getTabs } from "../../../utils/chromeAPI.js"
+// @ts-ignore - JavaScript utility imports
+import { getLink } from "../../../utils/copyAPI.js"
+// @ts-ignore - JavaScript utility imports
+import { Browser } from "../../../utils/browser.js"
 import CopyAllButton from "./icon/CopyAllButton"
 import CreateIcon from "./icon/Icon"
 
