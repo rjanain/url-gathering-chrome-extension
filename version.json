@@ -16,7 +16,15 @@
       "Fixed event handling issues with React synthetic events",
       "Added defensive programming for improved error handling"
     ],
-    "minor": [],
+    "minor": [
+      "QR code export functionality with multiple export modes",
+      "Collections management system with full CRUD operations",
+      "Drag-and-drop functionality for reordering collections",
+      "Enhanced sidepanel integration and improved UI layouts",
+      "Advanced QR code generation with customizable options",
+      "Collection editing and deletion capabilities",
+      "Improved collection storage and retrieval utilities"
+    ],
     "patch": []
   },
   "browsers": {
