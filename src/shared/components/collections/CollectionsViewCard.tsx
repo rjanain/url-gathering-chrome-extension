@@ -21,7 +21,7 @@ import {
     Trash2
 } from 'lucide-react'
 // @ts-ignore - JavaScript utility imports
-import { getAllCollections, updateCollection, deleteCollection, saveCollection, createCollectionFromCurrentTabs } from '../../../utils/collectionsStorage.js'
+import { getAllCollections, updateCollection, deleteCollection, saveCollection, createCollectionFromCurrentTabs, reorderCollections } from '../../../utils/collectionsStorage.js'
 // @ts-ignore - JavaScript utility imports
 import { createTabsFromUrls } from '../../../utils/importUrls.js'
 // @ts-ignore - JavaScript utility imports
@@ -43,6 +43,7 @@ export const CollectionsViewCard = () => {
     const [editingName, setEditingName] = useState('')
     const [newCollectionName, setNewCollectionName] = useState('')
     const [isCreating, setIsCreating] = useState(false)
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
 
     useEffect(() => {
         loadCollections()
@@ -171,6 +172,46 @@ export const CollectionsViewCard = () => {
         }
     }
 
+    const handleDragStart = (e: React.DragEvent, index: number) => {
+        setDraggedIndex(index)
+        e.dataTransfer.effectAllowed = 'move'
+    }
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault()
+        e.dataTransfer.dropEffect = 'move'
+    }
+
+    const handleDrop = async (e: React.DragEvent, dropIndex: number) => {
+        e.preventDefault()
+
+        if (draggedIndex === null || draggedIndex === dropIndex) {
+            setDraggedIndex(null)
+            return
+        }
+
+        const newCollections = [...collections]
+        const draggedItem = newCollections[draggedIndex]
+
+        // Remove from old position
+        newCollections.splice(draggedIndex, 1)
+
+        // Insert at new position
+        newCollections.splice(dropIndex, 0, draggedItem)
+
+        setCollections(newCollections)
+        setDraggedIndex(null)
+
+        // Save new order
+        try {
+            await reorderCollections(newCollections)
+        } catch (error) {
+            console.error('Failed to save collection order:', error)
+            // Revert on error
+            loadCollections()
+        }
+    }
+
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString(undefined, {
             month: 'short',
@@ -256,8 +297,15 @@ export const CollectionsViewCard = () => {
                 </Card>
             ) : (
                 <div className="space-y-2 max-h-64 overflow-y-auto">
-                    {collections.map((collection) => (
-                        <Card key={collection.id} className="p-3">
+                    {collections.map((collection, index) => (
+                        <Card
+                            key={collection.id}
+                            className="p-3"
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, index)}
+                            onDragOver={handleDragOver}
+                            onDrop={(e) => handleDrop(e, index)}
+                        >
                             <div className="space-y-2">
                                 {/* Collection Header */}
                                 <div className="flex items-start justify-between">
