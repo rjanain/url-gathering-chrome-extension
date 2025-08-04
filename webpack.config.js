@@ -7,7 +7,8 @@ module.exports = {
     entry: {
         serviceWorker: './src/background/serviceWorker.js',
         contentScript: './src/content/contentScript.js',
-        popup: './src/popup/index.tsx'
+        popup: './src/popup/index.tsx',
+        sidepanel: './src/sidepanel/index.tsx'
     },
     output: {
         path: path.resolve(__dirname, 'dist/vendor'),

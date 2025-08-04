@@ -13,7 +13,8 @@
   "permissions": [
     "tabs",
     "storage",
-    "activeTab"
+    "activeTab",
+    "sidePanel"
   ],
   "host_permissions": [
     "http://*/*",
@@ -36,6 +37,9 @@
       "48": "assets/img/32.png",
       "128": "assets/img/128.png"
     }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
   },
   "content_scripts": [
     {
