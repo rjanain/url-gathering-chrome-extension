@@ -122,7 +122,7 @@ export const HomeCard = () => {
       } else {
         // Multiple URLs - check user preference
         const qrExportMode = await getQRExportMode();
-        
+
         if (qrExportMode === 'single') {
           // Export as single combined QR code
           const filename = type === 'all' ? 'linkpilot-all-tabs-qr.svg' : 'linkpilot-highlighted-tabs-qr.svg';
