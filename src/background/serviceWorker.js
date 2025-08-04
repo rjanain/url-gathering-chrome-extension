@@ -16,24 +16,8 @@ const initBackgroundScript = async () => {
     // Set up installation listener with browser-specific handling
     api.runtime.onInstalled.addListener(details => {
       if (details.reason === api.runtime.OnInstalledReason.INSTALL) {
-        // Use conditional browser logic for uninstall URLs
-        Browser.utils.conditional({
-          chrome: () => {
-            api.runtime.setUninstallURL("https://rjana.in/extra/uninstall-url-gathering-chrome/", null);
-          },
-          firefox: () => {
-            api.runtime.setUninstallURL("https://rjana.in/extra/uninstall-url-gathering-firefox/", null);
-          },
-          edge: () => {
-            api.runtime.setUninstallURL("https://rjana.in/extra/uninstall-url-gathering-edge/", null);
-          },
-          safari: () => {
-            api.runtime.setUninstallURL("https://rjana.in/extra/uninstall-url-gathering-safari/", null);
-          }
-        }, () => {
-          // Default fallback
-          api.runtime.setUninstallURL("https://rjana.in/extra/uninstall-url-gathering/", null);
-        });
+        // Set single uninstall URL for all browsers
+        api.runtime.setUninstallURL("https://rjana.in/extra/uninstall-url-gathering/", null);
       }
     });
 
