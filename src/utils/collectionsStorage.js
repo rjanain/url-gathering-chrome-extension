@@ -109,28 +109,6 @@ export async function deleteCollection(collectionId) {
 }
 
 /**
- * Reorder collections
- * @param {Array} reorderedCollections - Array of collections in new order
- * @returns {Promise<boolean>} Success status
- */
-export async function reorderCollections(reorderedCollections) {
-    try {
-        // Update the updatedAt timestamp for reordered collections
-        const updatedCollections = reorderedCollections.map(collection => ({
-            ...collection,
-            updatedAt: new Date().toISOString()
-        }));
-
-        await api.storage.sync.set({ collections: updatedCollections });
-        console.log('Collections reordered successfully');
-        return true;
-    } catch (error) {
-        console.error('Failed to reorder collections:', error);
-        return false;
-    }
-}
-
-/**
  * Get a specific collection by ID
  * @param {string} collectionId - Collection ID
  * @returns {Promise<Object|null>} Collection object or null
