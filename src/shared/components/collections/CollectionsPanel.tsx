@@ -32,7 +32,6 @@ import {
     saveCollection,
     updateCollection,
     deleteCollection,
-    reorderCollections,
     createCollectionFromCurrentTabs,
 } from "../../../utils/collectionsStorage.js";
 // @ts-ignore - JavaScript utility imports
@@ -59,7 +58,6 @@ export const CollectionsPanel = () => {
     const [isCreating, setIsCreating] = useState(false);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editingName, setEditingName] = useState("");
-    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
     useEffect(() => {
         loadCollections();
@@ -116,14 +114,14 @@ export const CollectionsPanel = () => {
         }
     };
 
-    const handleRename = async (id: string) => {
-        if (!editingName.trim()) return;
+    const handleRename = async () => {
+        if (!editingId || !editingName.trim()) return;
 
         try {
-            await updateCollection(id, { name: editingName.trim() });
+            await updateCollection(editingId, { name: editingName.trim() });
             setCollections((prev) =>
                 prev.map((col) =>
-                    col.id === id ? { ...col, name: editingName.trim() } : col
+                    col.id === editingId ? { ...col, name: editingName.trim(), updatedAt: new Date().toISOString() } : col
                 )
             );
             setEditingId(null);
@@ -150,46 +148,6 @@ export const CollectionsPanel = () => {
     const cancelEditing = () => {
         setEditingId(null);
         setEditingName("");
-    };
-
-    const handleDragStart = (e: React.DragEvent, index: number) => {
-        setDraggedIndex(index);
-        e.dataTransfer.effectAllowed = "move";
-    };
-
-    const handleDragOver = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "move";
-    };
-
-    const handleDrop = async (e: React.DragEvent, dropIndex: number) => {
-        e.preventDefault();
-
-        if (draggedIndex === null || draggedIndex === dropIndex) {
-            setDraggedIndex(null);
-            return;
-        }
-
-        const newCollections = [...collections];
-        const draggedItem = newCollections[draggedIndex];
-
-        // Remove from old position
-        newCollections.splice(draggedIndex, 1);
-
-        // Insert at new position
-        newCollections.splice(dropIndex, 0, draggedItem);
-
-        setCollections(newCollections);
-        setDraggedIndex(null);
-
-        // Save new order
-        try {
-            await reorderCollections(newCollections);
-        } catch (error) {
-            console.error("Failed to save collection order:", error);
-            // Revert on error
-            loadCollections();
-        }
     };
 
     const openCollection = async (collection: Collection) => {
@@ -250,14 +208,6 @@ export const CollectionsPanel = () => {
 
     return (
         <div className="space-y-4">
-            {/* Header */}
-            <div>
-                <h2 className="text-lg font-semibold mb-1">Collections Manager</h2>
-                <p className="text-sm text-muted-foreground">
-                    Organize and manage your saved URL collections
-                </p>
-            </div>
-
             {/* Create New Collection */}
             <Card>
                 <CardHeader className="pb-3">
@@ -326,145 +276,156 @@ export const CollectionsPanel = () => {
                 </Card>
             ) : (
                 <div className="space-y-2 max-h-96 overflow-y-auto">
-{collections.map((collection, index) => (
-  <Card
-    key={collection.id}
-    draggable
-    onDragStart={(e) => handleDragStart(e, index)}
-    onDragOver={handleDragOver}
-    onDrop={(e) => handleDrop(e, index)}
-    className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm"
-  >
-    <div className="space-y-2">
-      {/* Collection Header */}
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-2 flex-1 min-w-0">
-          {/* drag handle */}
-          <GripVertical className="h-4 w-4 text-muted-foreground cursor-move flex-shrink-0" />
-          <div className="flex-1 min-w-0">
-            <h5
-              className="text-sm font-medium truncate"
-              title={collection.name}
-            >
-              {collection.name}
-            </h5>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span>
-                {collection.urls.length} URL
-                {collection.urls.length !== 1 ? "s" : ""}
-              </span>
-              <span>•</span>
-              <span>{formatDate(collection.createdAt)}</span>
-            </div>
-          </div>
-        </div>
-        {/* badge + dropdown */}
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="text-xs">
-            {collection.urls.length}
-          </Badge>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={() => startEditing(collection)}>
-                <Edit3 className="h-3 w-3 mr-2" />
-                Rename Collection
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => openCollection(collection)}>
-                <ExternalLink className="h-3 w-3 mr-2" />
-                Open All URLs
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => exportAsQR(collection)}>
-                <QrCode className="h-3 w-3 mr-2" />
-                Export as QR
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleDelete(collection.id)}
-                className="text-destructive"
-              >
-                <Trash2 className="h-3 w-3 mr-2" />
-                Delete Collection
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+                    {collections.map((collection) => (
+                        <Card
+                            key={collection.id}
+                            className="p-3"
+                        >
+                            <div className="space-y-2">
+                                {/* Collection Header */}
+                                <div className="flex items-start justify-between">
+                                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                                        {/* Drag Handle */}
+                                        <GripVertical className="h-4 w-4 text-muted-foreground cursor-move flex-shrink-0" />
+                                        <div className="flex-1 min-w-0">
+                                            {editingId === collection.id ? (
+                                                <div className="space-y-1">
+                                                    <Input
+                                                        value={editingName}
+                                                        onChange={(e) => setEditingName(e.target.value)}
+                                                        onKeyDown={(e) => {
+                                                            if (e.key === 'Enter') {
+                                                                handleRename()
+                                                            } else if (e.key === 'Escape') {
+                                                                cancelEditing()
+                                                            }
+                                                        }}
+                                                        className="text-sm h-6"
+                                                        autoFocus
+                                                    />
+                                                    <div className="flex gap-1">
+                                                        <Button size="sm" onClick={handleRename} className="h-5 text-xs px-2">
+                                                            Save
+                                                        </Button>
+                                                        <Button size="sm" variant="outline" onClick={cancelEditing} className="h-5 text-xs px-2">
+                                                            Cancel
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    <h5 className="text-sm font-medium truncate" title={collection.name}>
+                                                        {collection.name}
+                                                    </h5>
+                                                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                                        <span>{collection.urls.length} URL{collection.urls.length !== 1 ? 's' : ''}</span>
+                                                        <span>•</span>
+                                                        <span>{formatDate(collection.createdAt)}</span>
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {/* Badge + Dropdown */}
+                                    <div className="flex items-center gap-2">
+                                        <Badge variant="secondary" className="text-xs">
+                                            {collection.urls.length}
+                                        </Badge>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                                    <MoreVertical className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end" className="w-48">
+                                                <DropdownMenuItem onClick={() => startEditing(collection)}>
+                                                    <Edit3 className="h-3 w-3 mr-2" />
+                                                    Rename Collection
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => openCollection(collection)}>
+                                                    <ExternalLink className="h-3 w-3 mr-2" />
+                                                    Open All URLs
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => exportAsQR(collection)}>
+                                                    <QrCode className="h-3 w-3 mr-2" />
+                                                    Export as QR
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() => handleDelete(collection.id)}
+                                                    className="text-destructive"
+                                                >
+                                                    <Trash2 className="h-3 w-3 mr-2" />
+                                                    Delete Collection
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+                                </div>
 
-      {/* Collection Actions */}
-      <div className="flex gap-1">
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => openCollection(collection)}
-          disabled={actionStates[`open_${collection.id}`]}
-          className="flex-1 text-xs h-7"
-        >
-          {actionStates[`open_${collection.id}`] ? (
-            <>
-              <ExternalLink className="h-3 w-3 mr-1 animate-pulse" />
-              Opening...
-            </>
-          ) : (
-            <>
-              <ExternalLink className="h-3 w-3 mr-1" />
-              Open All
-            </>
-          )}
-        </Button>
+                                {/* Collection Actions */}
+                                {editingId !== collection.id && (
+                                    <div className="flex gap-1">
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => openCollection(collection)}
+                                            disabled={actionStates[`open_${collection.id}`]}
+                                            className="flex-1 text-xs h-7"
+                                        >
+                                            {actionStates[`open_${collection.id}`] ? (
+                                                <>
+                                                    <ExternalLink className="h-3 w-3 mr-1 animate-pulse" />
+                                                    Opening...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <ExternalLink className="h-3 w-3 mr-1" />
+                                                    Open All
+                                                </>
+                                            )}
+                                        </Button>
 
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => exportAsQR(collection)}
-          disabled={actionStates[`qr_${collection.id}`]}
-          className="text-xs h-7 px-2"
-        >
-          {actionStates[`qr_${collection.id}`] ? (
-            <Download className="h-3 w-3 animate-pulse" />
-          ) : (
-            <QrCode className="h-3 w-3" />
-          )}
-        </Button>
-      </div>
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => exportAsQR(collection)}
+                                            disabled={actionStates[`qr_${collection.id}`]}
+                                            className="text-xs h-7 px-2"
+                                        >
+                                            {actionStates[`qr_${collection.id}`] ? (
+                                                <Download className="h-3 w-3 animate-pulse" />
+                                            ) : (
+                                                <QrCode className="h-3 w-3" />
+                                            )}
+                                        </Button>
+                                    </div>
+                                )}
 
-      {/* URL Preview (first 2-3 URLs) */}
-      {collection.urls.length > 0 && (
-        <div className="space-y-1">
-          {collection.urls.slice(0, 2).map((urlItem, urlIndex) => (
-            <div
-              key={urlIndex}
-              className="text-xs text-muted-foreground truncate"
-              title={urlItem.url}
-            >
-              {urlItem.title && urlItem.title !== urlItem.url ? (
-                <>
-                  <span className="font-medium">{urlItem.title}</span>
-                  <span className="text-muted-foreground/70">
-                    {" "}
-                    - {urlItem.url}
-                  </span>
-                </>
-              ) : (
-                urlItem.url
-              )}
-            </div>
-          ))}
-          {collection.urls.length > 2 && (
-            <div className="text-xs text-muted-foreground/70 italic">
-              +{collection.urls.length - 2} more URLs
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  </Card>
-))}
-
-
+                                {/* URL Preview (first 2-3 URLs) */}
+                                {collection.urls.length > 0 && (
+                                    <div className="space-y-1">
+                                        {collection.urls.slice(0, 2).map((urlItem, index) => (
+                                            <div key={index} className="text-xs text-muted-foreground truncate">
+                                                {urlItem.title && urlItem.title !== urlItem.url ? (
+                                                    <>
+                                                        <span className="font-medium">{urlItem.title}</span>
+                                                        <span className="text-muted-foreground/70"> - {urlItem.url}</span>
+                                                    </>
+                                                ) : (
+                                                    urlItem.url
+                                                )}
+                                            </div>
+                                        ))}
+                                        {collection.urls.length > 2 && (
+                                            <div className="text-xs text-muted-foreground/70 italic">
+                                                +{collection.urls.length - 2} more URLs
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </Card>
+                    ))}
                 </div>
             )}
         </div>

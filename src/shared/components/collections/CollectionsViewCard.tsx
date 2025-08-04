@@ -10,7 +10,6 @@ import {
     DropdownMenuTrigger,
 } from '../../../components/ui/dropdown-menu'
 import {
-    Settings,
     ExternalLink,
     QrCode,
     Download,
@@ -22,13 +21,11 @@ import {
     Trash2
 } from 'lucide-react'
 // @ts-ignore - JavaScript utility imports
-import { getAllCollections, updateCollection, deleteCollection } from '../../../utils/collectionsStorage.js'
+import { getAllCollections, updateCollection, deleteCollection, saveCollection, createCollectionFromCurrentTabs } from '../../../utils/collectionsStorage.js'
 // @ts-ignore - JavaScript utility imports
 import { createTabsFromUrls } from '../../../utils/importUrls.js'
 // @ts-ignore - JavaScript utility imports
 import { exportCollectionAsQR } from '../../../utils/qrExport.js'
-// @ts-ignore - JavaScript utility imports
-import { Browser } from '../../../utils/browser.js'
 
 interface Collection {
     id: string
@@ -44,6 +41,8 @@ export const CollectionsViewCard = () => {
     const [actionStates, setActionStates] = useState<{ [key: string]: boolean }>({})
     const [editingId, setEditingId] = useState<string | null>(null)
     const [editingName, setEditingName] = useState('')
+    const [newCollectionName, setNewCollectionName] = useState('')
+    const [isCreating, setIsCreating] = useState(false)
 
     useEffect(() => {
         loadCollections()
@@ -57,47 +56,6 @@ export const CollectionsViewCard = () => {
             console.error('Failed to load collections:', error)
         } finally {
             setLoading(false)
-        }
-    }
-
-    const openSidePanel = async () => {
-        try {
-            const api = Browser.api.getAPI();
-
-            // Check if we're in a browser that supports sidePanel
-            const browserType = Browser.info.detect();
-
-            if ((browserType === Browser.info.CHROME || browserType === Browser.info.EDGE)
-                && api.sidePanel && api.sidePanel.open) {
-                try {
-                    // Try direct approach - this should work if called directly from user gesture
-                    const tabs = await api.tabs.query({ active: true, currentWindow: true });
-                    if (tabs[0] && tabs[0].windowId) {
-                        await api.sidePanel.open({ windowId: tabs[0].windowId });
-                        // Close the popup when sidepanel opens successfully
-                        window.close();
-                        return; // Success!
-                    }
-                } catch (error) {
-                    console.log('Sidepanel direct open failed (expected in popup context):',
-                        error instanceof Error ? error.message : 'Unknown error');
-                    // This is expected to fail in popup context due to user gesture requirements
-                }
-            }
-
-            // Fallback for all browsers: Open collections manager in new tab
-            // This always works and provides the same functionality
-            const sidepanelUrl = api.runtime.getURL('sidepanel.html');
-            await api.tabs.create({
-                url: sidepanelUrl,
-                active: true
-            });
-
-            // Close the popup to avoid confusion
-            window.close();
-
-        } catch (error) {
-            console.error('Error opening collections manager:', error);
         }
     }
 
@@ -173,6 +131,46 @@ export const CollectionsViewCard = () => {
         }
     }
 
+    const handleCreateFromCurrentTabs = async () => {
+        if (!newCollectionName.trim()) return
+
+        setIsCreating(true)
+        try {
+            const collection = await createCollectionFromCurrentTabs(
+                newCollectionName.trim()
+            )
+            if (collection) {
+                setCollections(prev => [collection, ...prev])
+                setNewCollectionName('')
+            }
+        } catch (error) {
+            console.error('Failed to create collection:', error)
+        } finally {
+            setIsCreating(false)
+        }
+    }
+
+    const handleCreateEmpty = async () => {
+        if (!newCollectionName.trim()) return
+
+        setIsCreating(true)
+        try {
+            const collection = await saveCollection({
+                name: newCollectionName.trim(),
+                urls: [],
+                source: 'manual',
+            })
+            if (collection) {
+                setCollections(prev => [collection, ...prev])
+                setNewCollectionName('')
+            }
+        } catch (error) {
+            console.error('Failed to create collection:', error)
+        } finally {
+            setIsCreating(false)
+        }
+    }
+
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString(undefined, {
             month: 'short',
@@ -191,7 +189,49 @@ export const CollectionsViewCard = () => {
 
     return (
         <div className="space-y-4">
-            {/* Header with Manage Button */}
+            {/* Create New Collection */}
+            <Card>
+                <CardHeader className="pb-3">
+                    <CardTitle className="text-sm font-medium">
+                        Create New Collection
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    <Input
+                        placeholder="Enter collection name..."
+                        value={newCollectionName}
+                        onChange={(e) => setNewCollectionName(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" && newCollectionName.trim()) {
+                                handleCreateFromCurrentTabs();
+                            }
+                        }}
+                        className="text-sm"
+                    />
+                    <div className="flex gap-2">
+                        <Button
+                            size="sm"
+                            onClick={handleCreateFromCurrentTabs}
+                            disabled={!newCollectionName.trim() || isCreating}
+                            className="flex-1 text-xs"
+                        >
+                            <Plus className="h-3 w-3 mr-1" />
+                            {isCreating ? "Creating..." : "From Current Tabs"}
+                        </Button>
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={handleCreateEmpty}
+                            disabled={!newCollectionName.trim() || isCreating}
+                            className="text-xs"
+                        >
+                            Empty
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Header with Collection Count */}
             <div className="flex items-center justify-between">
                 <div>
                     <h4 className="text-sm font-medium">Collections</h4>
@@ -199,15 +239,6 @@ export const CollectionsViewCard = () => {
                         {collections.length} saved collection{collections.length !== 1 ? 's' : ''}
                     </p>
                 </div>
-                <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={openSidePanel}
-                    className="text-xs"
-                >
-                    <Settings className="h-3 w-3 mr-1" />
-                    Manage Collections
-                </Button>
             </div>
 
             {/* Collections List */}
@@ -218,10 +249,9 @@ export const CollectionsViewCard = () => {
                         <p className="text-sm text-muted-foreground text-center mb-3">
                             No collections yet
                         </p>
-                        <Button size="sm" onClick={openSidePanel} variant="outline">
-                            <Plus className="h-3 w-3 mr-1" />
-                            Create First Collection
-                        </Button>
+                        <p className="text-xs text-muted-foreground text-center">
+                            Create your first collection above
+                        </p>
                     </CardContent>
                 </Card>
             ) : (
@@ -374,19 +404,6 @@ export const CollectionsViewCard = () => {
                         </Card>
                     ))}
                 </div>
-            )}
-
-            {/* Quick Action */}
-            {collections.length > 0 && (
-                <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={openSidePanel}
-                    className="w-full text-xs"
-                >
-                    <Plus className="h-3 w-3 mr-1" />
-                    Add New Collection
-                </Button>
             )}
         </div>
     )
