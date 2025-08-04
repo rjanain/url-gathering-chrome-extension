@@ -12,7 +12,9 @@ import { getLink } from "../../../utils/copyAPI.js"
 // @ts-ignore - JavaScript utility imports
 import { Browser } from "../../../utils/browser.js"
 // @ts-ignore - JavaScript utility imports
-import { downloadQRCodeSVG, createQRCodeZip } from "../../../utils/qrExport.js"
+import { downloadQRCodeSVG, createQRCodeZip, downloadCombinedQRCodeSVG } from "../../../utils/qrExport.js"
+// @ts-ignore - JavaScript utility imports
+import { getQRExportMode } from "../../../utils/settingsStorage.js"
 // @ts-ignore - JavaScript utility imports
 import { saveCollection } from "../../../utils/collectionsStorage.js"
 import CopyAllButton from "./icon/CopyAllButton"
@@ -107,14 +109,30 @@ export const HomeCard = () => {
         return;
       }
 
-      const urls = urlsToExport.map(tab => tab.url);
+      // Convert tabs to URL objects format
+      const urls = urlsToExport.map(tab => ({
+        url: tab.url,
+        title: tab.title,
+        favIconUrl: tab.favIconUrl
+      }));
 
       if (urls.length === 1) {
-        // Single URL - export as SVG
-        await downloadQRCodeSVG(urls[0], 'linkpilot-qr.svg');
+        // Single URL - always export as individual SVG
+        await downloadQRCodeSVG(urls[0].url, 'linkpilot-qr.svg');
       } else {
-        // Multiple URLs - export as ZIP
-        await createQRCodeZip(urls, 'linkpilot-qr-codes.zip');
+        // Multiple URLs - check user preference
+        const qrExportMode = await getQRExportMode();
+        
+        if (qrExportMode === 'single') {
+          // Export as single combined QR code
+          const filename = type === 'all' ? 'linkpilot-all-tabs-qr.svg' : 'linkpilot-highlighted-tabs-qr.svg';
+          await downloadCombinedQRCodeSVG(urls, filename);
+        } else {
+          // Export as ZIP with separate QR codes
+          const filename = type === 'all' ? 'linkpilot-all-tabs-qr-codes.zip' : 'linkpilot-highlighted-tabs-qr-codes.zip';
+          const urlStrings = urls.map(urlObj => urlObj.url);
+          await createQRCodeZip(urlStrings, filename);
+        }
       }
 
       // Show success feedback
