@@ -394,7 +394,7 @@ export const HomeCard = () => {
         {(copyRequest["qr_all"] || copyRequest["qr_highlighted"]) ? (
           <div className="mt-2">
             <Badge variant="default" className="bg-green-600">
-              QR codes exported successfully
+              QR code exported successfully
             </Badge>
           </div>
         ) : null}
