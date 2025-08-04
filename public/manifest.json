@@ -1,7 +1,7 @@
 {
   "name": "LinkPilot",
   "description": "Easily copy all browser URLs in multiple formats: Markdown, CSV, HTML, JSON, and plain text. Perfect for research!",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "manifest_version": 3,
   "offline_enabled": true,
   "author": "Dr. Rakesh Jana",
@@ -13,7 +13,8 @@
   "permissions": [
     "tabs",
     "storage",
-    "activeTab"
+    "activeTab",
+    "sidePanel"
   ],
   "host_permissions": [
     "http://*/*",
@@ -36,6 +37,9 @@
       "48": "assets/img/32.png",
       "128": "assets/img/128.png"
     }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
   },
   "content_scripts": [
     {

@@ -3,6 +3,8 @@ import { Switch } from "../../../../components/ui/switch"
 import { Label } from "../../../../components/ui/label"
 // @ts-ignore - JavaScript utility imports
 import { saveToChromeStorage } from "../../../../utils/handlerStorage.js"
+// @ts-ignore - JavaScript utility imports
+import { getAllSettings, saveSetting } from "../../../../utils/settingsStorage.js"
 import ShowToast from "./ShowToast"
 
 // Use webextension-polyfill for cross-browser compatibility
@@ -11,6 +13,7 @@ import browser from 'webextension-polyfill';
 interface OptionFormState {
   format?: string
   includeName?: boolean
+  qrExportMode?: string
 }
 
 interface Notifications {
@@ -71,7 +74,7 @@ const OptionForm = () => {
 
   // Load once from storage
   useEffect(() => {
-    browser.storage.sync.get(null)
+    getAllSettings()
       .then((result: OptionFormState) => {
         dispatch({ type: "LOAD", payload: result })
         console.log("Fetched result from storage", result)
@@ -85,7 +88,13 @@ const OptionForm = () => {
   const setField = (field: string, value: string | boolean) => {
     console.log(field, value)
     dispatch({ type: "SET_FIELD", field, value })
-    saveToChromeStorage(field, value)
+
+    // Use appropriate storage method
+    if (field === 'qrExportMode') {
+      saveSetting(field, value)
+    } else {
+      saveToChromeStorage(field, value)
+    }
   }
 
   const handleHideToast = () => {
@@ -125,6 +134,24 @@ const OptionForm = () => {
             onCheckedChange={(checked: boolean) => setField("includeName", checked)}
           />
           <Label htmlFor="includeName">Include Page Title</Label>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="qrExportMode">QR Code Export Mode</Label>
+          <select
+            id="qrExportMode"
+            value={state.form?.qrExportMode || "single"}
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            aria-label="Choose QR code export behavior"
+            onChange={e => { setField(e.target.id, e.target.value) }}
+          >
+            <option value="single">Single QR (Combined URLs)</option>
+            <option value="separate">Separate QRs (ZIP File)</option>
+          </select>
+          <p className="text-xs text-muted-foreground">
+            Single QR: All URLs in one QR code (recommended).
+            Separate QRs: Each URL gets its own QR code in a ZIP file.
+          </p>
         </div>
       </form>
     </div>

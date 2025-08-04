@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-08-04
+
+### Added
+- QR code export functionality with multiple export modes (individual, combined, ZIP archive)
+- Complete Collections management system with CRUD operations
+- Drag-and-drop functionality for reordering collections
+- Collection editing and deletion capabilities
+- Enhanced QR code generation with customizable options and SVG output
+- Advanced collection storage and retrieval utilities
+- Improved sidepanel integration and HTML structure
+
+### Enhanced
+- Collections Panel UI with improved layout and new management features
+- Better data retrieval and consistency in collection handling
+- Streamlined codebase by removing redundant components
+
+### Fixed
+- Improved message clarity for QR code export success notifications
+- Refactored data handling for better clarity and consistency
+- Code formatting and readability improvements
+
+
 ## [1.1.0] - 2025-08-03
 
 ### Added

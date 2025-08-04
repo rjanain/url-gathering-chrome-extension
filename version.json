@@ -1,9 +1,9 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "LinkPilot",
   "description": "Modern URL gathering extension with Tailwind CSS UI and cross-browser compatibility",
-  "previousVersion": "1.0.0",
-  "releaseDate": "2025-08-03",
+  "previousVersion": "1.1.0",
+  "releaseDate": "2025-08-04",
   "releaseType": "minor",
   "changes": {
     "major": [
@@ -16,7 +16,15 @@
       "Fixed event handling issues with React synthetic events",
       "Added defensive programming for improved error handling"
     ],
-    "minor": [],
+    "minor": [
+      "QR code export functionality with multiple export modes",
+      "Collections management system with full CRUD operations",
+      "Drag-and-drop functionality for reordering collections",
+      "Enhanced sidepanel integration and improved UI layouts",
+      "Advanced QR code generation with customizable options",
+      "Collection editing and deletion capabilities",
+      "Improved collection storage and retrieval utilities"
+    ],
     "patch": []
   },
   "browsers": {

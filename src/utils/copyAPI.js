@@ -37,7 +37,7 @@ function makeMarkdownText(title, url, includeName) {
 
 function makeCSVText(title, url, includeName) {
     console.log(includeName)
-    return  (includeName ? ( '"' +  (title && title.trim() ? title : url).replace('"', '\\"') + '",' ) : '') 
+    return  (includeName ? ( '"' +  (title && title.trim() ? title : url).replace('"', '\\"') + '",' ) : '')
     + '"'+ url.replace('"', '\\"')  + '"'
 }
 
@@ -57,18 +57,24 @@ function makePlainText(title, url, includeName) {
 function convertedData(data, id, format, includeName, seperator) {
 
     if (id != 'copyAll' && id != 'copyHighlighted') {
-        // If a single icon press
+        // If a single icon press, find the tab by its ID
+        const tab = data.find(tab => tab.id == id);
+        if (!tab) {
+            console.error('Tab not found for ID:', id);
+            return '';
+        }
+
         switch (format) {
             case 'markdown':
-                return makeMarkdownText(data[id].title, data[id].url, includeName)
+                return makeMarkdownText(tab.title, tab.url, includeName)
             case 'csv':
-                return makeCSVText(data[id].title, data[id].url, includeName)
+                return makeCSVText(tab.title, tab.url, includeName)
             case 'json':
-                return makeJSONText(data[id].title, data[id].url, includeName)
+                return makeJSONText(tab.title, tab.url, includeName)
             case 'html':
-                return makeHTMLText(data[id].title, data[id].url, includeName)
+                return makeHTMLText(tab.title, tab.url, includeName)
             default:
-                return makePlainText(data[id].title, data[id].url, includeName)
+                return makePlainText(tab.title, tab.url, includeName)
         }
     } else {
         // If press copyall button
@@ -85,7 +91,7 @@ function convertedData(data, id, format, includeName, seperator) {
                 return "[" +
                     data.map(el => {
                         return makeJSONText(el.title, el.url, includeName)
-                    }).join(",") 
+                    }).join(",")
                     + "]"
             case 'html':
                 return data.map(el => {
