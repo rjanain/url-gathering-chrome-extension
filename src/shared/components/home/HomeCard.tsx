@@ -270,7 +270,7 @@ export const HomeCard = () => {
               ) : (
                 <QrCode className="h-4 w-4 mr-2" />
               )}
-              QR Export All
+              QR All
             </Button>
 
             {tabs.filter(el => el.highlighted).length > 0 && (
@@ -298,7 +298,7 @@ export const HomeCard = () => {
                 className="flex-1"
               >
                 <Save className="h-4 w-4 mr-2" />
-                Save All as Collection
+                Save All
               </Button>
 
               {tabs.filter(el => el.highlighted).length > 0 && (
