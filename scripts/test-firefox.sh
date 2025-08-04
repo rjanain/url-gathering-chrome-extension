@@ -37,8 +37,8 @@ check_firefox() {
     if command -v firefox &> /dev/null; then
         print_success "Firefox is installed"
         return 0
-    elif [ -d "/Applications/Firefox.app" ]; then
-        print_success "Firefox is installed"
+    elif [ -d "/Applications/Firefox\ Developer\ Edition.app/" ]; then
+        print_success "Firefox Developer Edition is installed"
         return 0
     else
         print_error "Firefox is not installed. Please install Firefox first."
@@ -132,8 +132,8 @@ validate_webext() {
 open_firefox_debugging() {
     print_status "Opening Firefox debugging page..."
 
-    if [ -d "/Applications/Firefox.app" ]; then
-        open -a "Firefox" "about:debugging"
+    if [ -d "/Applications/Firefox\ Developer\ Edition.app/" ]; then
+        open -a "Firefox Developer Edition" "about:debugging"
     else
         firefox "about:debugging" 2>/dev/null || print_warning "Could not automatically open Firefox"
     fi
