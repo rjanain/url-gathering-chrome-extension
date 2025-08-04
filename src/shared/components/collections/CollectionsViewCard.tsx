@@ -2,16 +2,27 @@ import React, { useState, useEffect } from 'react'
 import { Button } from '../../../components/ui/button'
 import { Badge } from '../../../components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card'
+import { Input } from '../../../components/ui/input'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '../../../components/ui/dropdown-menu'
 import {
     Settings,
     ExternalLink,
     QrCode,
     Download,
     Plus,
-    FolderOpen
+    FolderOpen,
+    GripVertical,
+    MoreVertical,
+    Edit3,
+    Trash2
 } from 'lucide-react'
 // @ts-ignore - JavaScript utility imports
-import { getAllCollections } from '../../../utils/collectionsStorage.js'
+import { getAllCollections, updateCollection, deleteCollection } from '../../../utils/collectionsStorage.js'
 // @ts-ignore - JavaScript utility imports
 import { createTabsFromUrls } from '../../../utils/importUrls.js'
 // @ts-ignore - JavaScript utility imports
@@ -31,6 +42,8 @@ export const CollectionsViewCard = () => {
     const [collections, setCollections] = useState<Collection[]>([])
     const [loading, setLoading] = useState(true)
     const [actionStates, setActionStates] = useState<{ [key: string]: boolean }>({})
+    const [editingId, setEditingId] = useState<string | null>(null)
+    const [editingName, setEditingName] = useState('')
 
     useEffect(() => {
         loadCollections()
@@ -126,6 +139,40 @@ export const CollectionsViewCard = () => {
         }
     }
 
+    const startEditing = (collection: Collection) => {
+        setEditingId(collection.id)
+        setEditingName(collection.name)
+    }
+
+    const cancelEditing = () => {
+        setEditingId(null)
+        setEditingName('')
+    }
+
+    const saveEditing = async () => {
+        if (!editingId || !editingName.trim()) return
+
+        try {
+            await updateCollection(editingId, { name: editingName.trim() })
+            setCollections(prev =>
+                prev.map(col => col.id === editingId ? { ...col, name: editingName.trim(), updatedAt: new Date().toISOString() } : col)
+            )
+            setEditingId(null)
+            setEditingName('')
+        } catch (error) {
+            console.error('Failed to rename collection:', error)
+        }
+    }
+
+    const handleDelete = async (id: string) => {
+        try {
+            await deleteCollection(id)
+            setCollections(prev => prev.filter(col => col.id !== id))
+        } catch (error) {
+            console.error('Failed to delete collection:', error)
+        }
+    }
+
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString(undefined, {
             month: 'short',
@@ -184,55 +231,122 @@ export const CollectionsViewCard = () => {
                             <div className="space-y-2">
                                 {/* Collection Header */}
                                 <div className="flex items-start justify-between">
-                                    <div className="flex-1 min-w-0">
-                                        <h5 className="text-sm font-medium truncate">{collection.name}</h5>
-                                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                            <span>{collection.urls.length} URL{collection.urls.length !== 1 ? 's' : ''}</span>
-                                            <span>•</span>
-                                            <span>{formatDate(collection.createdAt)}</span>
+                                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                                        {/* Drag Handle */}
+                                        <GripVertical className="h-4 w-4 text-muted-foreground cursor-move flex-shrink-0" />
+                                        <div className="flex-1 min-w-0">
+                                            {editingId === collection.id ? (
+                                                <div className="space-y-1">
+                                                    <Input
+                                                        value={editingName}
+                                                        onChange={(e) => setEditingName(e.target.value)}
+                                                        onKeyDown={(e) => {
+                                                            if (e.key === 'Enter') {
+                                                                saveEditing()
+                                                            } else if (e.key === 'Escape') {
+                                                                cancelEditing()
+                                                            }
+                                                        }}
+                                                        className="text-sm h-6"
+                                                        autoFocus
+                                                    />
+                                                    <div className="flex gap-1">
+                                                        <Button size="sm" onClick={saveEditing} className="h-5 text-xs px-2">
+                                                            Save
+                                                        </Button>
+                                                        <Button size="sm" variant="outline" onClick={cancelEditing} className="h-5 text-xs px-2">
+                                                            Cancel
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    <h5 className="text-sm font-medium truncate" title={collection.name}>
+                                                        {collection.name}
+                                                    </h5>
+                                                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                                        <span>{collection.urls.length} URL{collection.urls.length !== 1 ? 's' : ''}</span>
+                                                        <span>•</span>
+                                                        <span>{formatDate(collection.createdAt)}</span>
+                                                    </div>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
-                                    <Badge variant="secondary" className="text-xs">
-                                        {collection.urls.length}
-                                    </Badge>
+                                    {/* Badge + Dropdown */}
+                                    <div className="flex items-center gap-2">
+                                        <Badge variant="secondary" className="text-xs">
+                                            {collection.urls.length}
+                                        </Badge>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                                    <MoreVertical className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end" className="w-48">
+                                                <DropdownMenuItem onClick={() => startEditing(collection)}>
+                                                    <Edit3 className="h-3 w-3 mr-2" />
+                                                    Rename Collection
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => openCollection(collection)}>
+                                                    <ExternalLink className="h-3 w-3 mr-2" />
+                                                    Open All URLs
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => exportAsQR(collection)}>
+                                                    <QrCode className="h-3 w-3 mr-2" />
+                                                    Export as QR
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() => handleDelete(collection.id)}
+                                                    className="text-destructive"
+                                                >
+                                                    <Trash2 className="h-3 w-3 mr-2" />
+                                                    Delete Collection
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
                                 </div>
 
                                 {/* Collection Actions */}
-                                <div className="flex gap-1">
-                                    <Button
-                                        size="sm"
-                                        variant="outline"
-                                        onClick={() => openCollection(collection)}
-                                        disabled={actionStates[`open_${collection.id}`]}
-                                        className="flex-1 text-xs h-7"
-                                    >
-                                        {actionStates[`open_${collection.id}`] ? (
-                                            <>
-                                                <ExternalLink className="h-3 w-3 mr-1 animate-pulse" />
-                                                Opening...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <ExternalLink className="h-3 w-3 mr-1" />
-                                                Open All
-                                            </>
-                                        )}
-                                    </Button>
+                                {editingId !== collection.id && (
+                                    <div className="flex gap-1">
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => openCollection(collection)}
+                                            disabled={actionStates[`open_${collection.id}`]}
+                                            className="flex-1 text-xs h-7"
+                                        >
+                                            {actionStates[`open_${collection.id}`] ? (
+                                                <>
+                                                    <ExternalLink className="h-3 w-3 mr-1 animate-pulse" />
+                                                    Opening...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <ExternalLink className="h-3 w-3 mr-1" />
+                                                    Open All
+                                                </>
+                                            )}
+                                        </Button>
 
-                                    <Button
-                                        size="sm"
-                                        variant="outline"
-                                        onClick={() => exportAsQR(collection)}
-                                        disabled={actionStates[`qr_${collection.id}`]}
-                                        className="text-xs h-7 px-2"
-                                    >
-                                        {actionStates[`qr_${collection.id}`] ? (
-                                            <Download className="h-3 w-3 animate-pulse" />
-                                        ) : (
-                                            <QrCode className="h-3 w-3" />
-                                        )}
-                                    </Button>
-                                </div>
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => exportAsQR(collection)}
+                                            disabled={actionStates[`qr_${collection.id}`]}
+                                            className="text-xs h-7 px-2"
+                                        >
+                                            {actionStates[`qr_${collection.id}`] ? (
+                                                <Download className="h-3 w-3 animate-pulse" />
+                                            ) : (
+                                                <QrCode className="h-3 w-3" />
+                                            )}
+                                        </Button>
+                                    </div>
+                                )}
 
                                 {/* URL Preview (first 2-3 URLs) */}
                                 {collection.urls.length > 0 && (
