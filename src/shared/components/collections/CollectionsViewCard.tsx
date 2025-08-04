@@ -61,6 +61,8 @@ export const CollectionsViewCard = () => {
           const tabs = await api.tabs.query({ active: true, currentWindow: true });
           if (tabs[0] && tabs[0].windowId) {
             await api.sidePanel.open({ windowId: tabs[0].windowId });
+            // Close the popup when sidepanel opens successfully
+            window.close();
             return; // Success!
           }
         } catch (error) {

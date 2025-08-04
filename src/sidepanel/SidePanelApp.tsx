@@ -5,8 +5,10 @@ import { CollectionsPanel } from '../shared/components/collections/CollectionsPa
 function SidePanelApp() {
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-background">
-        <CollectionsPanel />
+      <div className="min-h-screen bg-background p-4">
+        <div className="max-w-2xl mx-auto">
+          <CollectionsPanel />
+        </div>
       </div>
     </TooltipProvider>
   )
