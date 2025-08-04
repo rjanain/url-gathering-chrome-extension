@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-08-04
+
+### Changed
+- Add QR code export functionality, Collections management system with drag-and-drop reordering, and enhanced UI improvements
+
+
 ## [1.1.0] - 2025-08-03
 
 ### Added

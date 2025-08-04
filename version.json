@@ -1,9 +1,9 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "LinkPilot",
   "description": "Modern URL gathering extension with Tailwind CSS UI and cross-browser compatibility",
-  "previousVersion": "1.0.0",
-  "releaseDate": "2025-08-03",
+  "previousVersion": "1.1.0",
+  "releaseDate": "2025-08-04",
   "releaseType": "minor",
   "changes": {
     "major": [
